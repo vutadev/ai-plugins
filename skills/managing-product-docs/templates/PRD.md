@@ -93,6 +93,7 @@ Project archetype: **{{archetype}}**
 | 11 | API_REFERENCE | {{Included / Skipped}} | {{reason}} |
 | 12 | TESTCASES | Included | MANDATORY |
 | 13 | ROADMAP | Included | MANDATORY |
+| 14 | EXTERNAL_DOCS | {{Included / Skipped}} | {{reason}} |
 
 ## 11. Resolved Decisions
 

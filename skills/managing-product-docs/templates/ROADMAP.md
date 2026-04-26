@@ -87,6 +87,7 @@ When docs disagree, this order wins:
 6. **SITEMAP** — UI surface.
 7. **Database** — physical schema.
 8. **ROADMAP** — when.
+9. **EXTERNAL_DOCS** — external APIs, specs, resources we consume (leaf — reference catalog).
 
 Lower-numbered doc wins ties. Update upstream first; do not amend downstream to paper over PRD drift.
 

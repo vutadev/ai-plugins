@@ -1,6 +1,6 @@
 # Style Guide — Product Docs
 
-Shared conventions across all included docs (up to 13). Apply to every file in `docs/`.
+Shared conventions across all included docs (up to 14). Apply to every file in `docs/`.
 
 ## Header Block (REQUIRED on every doc)
 
@@ -64,6 +64,7 @@ First release: `1.0.0` when status flips Draft → Final. Pre-release iterations
 | `API-{RESOURCE}-{NNN}` | API_REFERENCE | API endpoint | `API-AUTH-001`, `API-ORDER-003` |
 | `TC-{CAT}-{NNN}` | TESTCASES | Test case | `TC-AUTH-001` |
 | `M{N}` | ROADMAP | Milestone | `M0`, `M1` |
+| `EXT-{CAT}-{NNN}` | EXTERNAL_DOCS | External resource | `EXT-API-001`, `EXT-STD-003` |
 | `db.{table}` | DATABASE | Table reference in prose | `db.bots` |
 
 Category codes (3–5 letters, ALL CAPS): `AUTH`, `RISK`, `BOT`, `BT` (backtest), `OPT` (optimization), `ACC` (access), `SEC`, `OPS`, `DATA`, `UI`, etc. Stay consistent — if PRD uses `AUTH`, every downstream doc uses `AUTH`.
@@ -71,6 +72,8 @@ Category codes (3–5 letters, ALL CAPS): `AUTH`, `RISK`, `BOT`, `BT` (backtest)
 **API_REFERENCE resource codes:** Use domain resource name matching category codes where possible (e.g. `API-AUTH-001` for auth endpoints, `API-ORDER-001` for order endpoints). Resource code = the domain the endpoint group belongs to.
 
 **TECHSTACK category codes:** `LANG` (language), `FW` (framework), `RT` (runtime), `INFRA` (infrastructure/host), `OBS` (observability), `SEC` (security/secrets), `BUILD` (build/CI), `TEST` (test tooling), `DATA` (datastores), `MSG` (queues/streams), `CACHE`, `CDN`.
+
+**EXTERNAL_DOCS category codes:** `API` (third-party API docs), `SDK` (library/SDK reference), `STD` (standards/RFCs/specs), `SVC` (hosted service docs), `COMP` (compliance/regulatory), `REF` (other reference material).
 
 ## Section Numbering
 

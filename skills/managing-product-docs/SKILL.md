@@ -1,22 +1,22 @@
 ---
 name: managing-product-docs
-description: Use when user asks to create, extract, update, refine, or audit product documentation (PRD, tech stack, architecture, SRS, sitemap, design system, roadmap, use cases, user flows, business rules, database design, API reference, test cases) for a software project — covers greenfield init from a brief, brownfield extraction from existing code, incremental updates after scope/feature/tech/architecture/design changes, and gap audits to detect drift between docs and code.
+description: Use when user asks to create, extract, update, refine, or audit product documentation (PRD, tech stack, architecture, SRS, sitemap, design system, roadmap, use cases, user flows, business rules, database design, API reference, test cases, external docs) for a software project — covers greenfield init from a brief, brownfield extraction from existing code, incremental updates after scope/feature/tech/architecture/design changes, and gap audits to detect drift between docs and code.
 ---
 
 # Creating Product Docs
 
 ## Overview
 
-Produce a coherent doc set (up to 13 docs) for software project planning. Docs share stable IDs and cross-reference each other so implementation can begin without ambiguity. Each doc has a single, distinct purpose — no overlap.
+Produce a coherent doc set (up to 14 docs) for software project planning. Docs share stable IDs and cross-reference each other so implementation can begin without ambiguity. Each doc has a single, distinct purpose — no overlap.
 
-**Consistent, repeatable, archetype-driven.** Every project produced with this skill starts from the same templates, same headers, same ID conventions, same section structure. The **project archetype** determines which docs are mandatory vs optional — not every project needs all 13. Differences live in content and doc selection only. Use the templates and style guide bundled with this skill — do not freestyle.
+**Consistent, repeatable, archetype-driven.** Every project produced with this skill starts from the same templates, same headers, same ID conventions, same section structure. The **project archetype** determines which docs are mandatory vs optional — not every project needs all 14. Differences live in content and doc selection only. Use the templates and style guide bundled with this skill — do not freestyle.
 
 ## Required Companion Files
 
 This skill ships with reusable scaffolding. **Always read these before writing:**
 
 - `reference/STYLE.md` — header block format, ID prefix registry, table conventions, Mermaid theme, footer format. Single source of truth for formatting.
-- `templates/PRD.md`, `templates/TECHSTACK.md`, `templates/ARCHITECTURE.md`, `templates/BUSINESS_RULES.md`, `templates/SRS.md`, `templates/USECASES.md`, `templates/USERFLOWS.md`, `templates/SITEMAP.md`, `templates/DESIGN.md`, `templates/DATABASE.md`, `templates/API_REFERENCE.md`, `templates/TESTCASES.md`, `templates/ROADMAP.md` — skeleton for each doc with placeholder syntax `{{PLACEHOLDER}}`.
+- `templates/PRD.md`, `templates/TECHSTACK.md`, `templates/ARCHITECTURE.md`, `templates/BUSINESS_RULES.md`, `templates/SRS.md`, `templates/USECASES.md`, `templates/USERFLOWS.md`, `templates/SITEMAP.md`, `templates/DESIGN.md`, `templates/DATABASE.md`, `templates/API_REFERENCE.md`, `templates/TESTCASES.md`, `templates/ROADMAP.md`, `templates/EXTERNAL_DOCS.md` — skeleton for each doc with placeholder syntax `{{PLACEHOLDER}}`.
 - `templates/REVIEW_REPORT.md` — gap-audit output template for **review** mode.
 
 Workflow: copy template → fill placeholders → keep section order intact → never delete required sections (Change Log, Traceability).
@@ -53,7 +53,7 @@ Pick ONE mode at the start of every invocation. Mode determines which phases run
 5. If `docs/PRD.md` exists and user says "review", "audit", "check", "are docs current" → review.
 6. When ambiguous, ask user which mode they want.
 
-## The 13-Doc Set
+## The 14-Doc Set
 
 | Order | File | Required | Purpose | Source |
 |-------|------|----------|---------|--------|
@@ -70,6 +70,7 @@ Pick ONE mode at the start of every invocation. Mode determines which phases run
 | 11 | `API_REFERENCE.md` | OPTIONAL | Hand-curated API contracts — endpoints, auth, errors, versioning, examples (`API-*` IDs) | SRS + ARCHITECTURE |
 | 12 | `TESTCASES.md` | **MANDATORY** | Executable test cases (`TC-*`) traced to FR/NFR/UC | SRS + USECASES |
 | 13 | `ROADMAP.md` | **MANDATORY** | Milestones, dates, exit gates | All upstream docs |
+| 14 | `EXTERNAL_DOCS.md` | OPTIONAL | Registry of external APIs, specs, standards, resources we consume or follow (`EXT-*` IDs) — pointers only, never paste content | TECHSTACK + ARCHITECTURE + integration code |
 
 All files go to `docs/` at project root.
 
@@ -79,12 +80,12 @@ The archetype determines which OPTIONAL docs to include. **MANDATORY docs are al
 
 | Archetype | Always include (MANDATORY) | Include (OPTIONAL) | Typically skip |
 |-----------|---------------------------|-------------------|----------------|
-| **Web App** (UI + API + DB) | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, USERFLOWS, SITEMAP, DESIGN, DATABASE, API_REFERENCE | — |
-| **Backend Service / API** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE, API_REFERENCE | SITEMAP, DESIGN, USERFLOWS |
-| **Library / SDK** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | API_REFERENCE, USECASES | SITEMAP, DESIGN, USERFLOWS, DATABASE |
-| **CLI Tool** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE | SITEMAP, DESIGN, USERFLOWS, API_REFERENCE |
-| **Mobile App** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | USECASES, USERFLOWS, DESIGN, DATABASE, API_REFERENCE | SITEMAP (use USERFLOWS instead) |
-| **Internal Tool / Admin** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | USECASES, SITEMAP, DATABASE | DESIGN (or lite version), USERFLOWS, API_REFERENCE |
+| **Web App** (UI + API + DB) | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, USERFLOWS, SITEMAP, DESIGN, DATABASE, API_REFERENCE, EXTERNAL_DOCS | — |
+| **Backend Service / API** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE, API_REFERENCE, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS |
+| **Library / SDK** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | API_REFERENCE, USECASES, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS, DATABASE |
+| **CLI Tool** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS, API_REFERENCE |
+| **Mobile App** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | USECASES, USERFLOWS, DESIGN, DATABASE, API_REFERENCE, EXTERNAL_DOCS | SITEMAP (use USERFLOWS instead) |
+| **Internal Tool / Admin** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | USECASES, SITEMAP, DATABASE, EXTERNAL_DOCS | DESIGN (or lite version), USERFLOWS, API_REFERENCE |
 
 **Rules:**
 - User can override any archetype selection ("I want DESIGN even though it's a CLI tool" → include it).
@@ -104,7 +105,7 @@ The archetype determines which OPTIONAL docs to include. **MANDATORY docs are al
 ### G2. PRD First
 
 PRD is the only doc that captures decisions directly. Sections:
-- Overview, Personas, Features (`F1`, `F2`, ...), Solution Context (entities + UI pages only — no tech stack or deployment), NFRs, Milestones (high-level only — detail goes to ROADMAP), Risks, Open Questions, **Doc Set** (archetype + included/skipped status for all 13 docs), **Resolved Decisions**, Glossary.
+- Overview, Personas, Features (`F1`, `F2`, ...), Solution Context (entities + UI pages only — no tech stack or deployment), NFRs, Milestones (high-level only — detail goes to ROADMAP), Risks, Open Questions, **Doc Set** (archetype + included/skipped status for all 14 docs), **Resolved Decisions**, Glossary.
 - "Open Questions" section at end with suggested defaults — user resolves these before continuing.
 
 ### G3. Loop on Open Questions
@@ -127,6 +128,7 @@ For EACH doc selected by archetype: `cp templates/{NAME}.md docs/{NAME}.md` ment
 10. **API_REFERENCE.md** — hand-curated API contract doc. Not auto-generated — captures design intent, not implementation artifact. Sections: API Overview (base URL, versioning scheme, auth method), Authentication & Authorization (token flow, scopes, key rotation), Endpoints by Resource (grouped by domain; each endpoint: method, path, description, request params/body, response schema, error codes, example request/response, related `FR-*`/`C-*`), Common Schemas (shared request/response objects), Error Codes (global error format, code registry), Rate Limits & Quotas, Pagination & Filtering conventions, Webhooks/Events (if applicable), Deprecation Policy. Cross-ref each endpoint to the `FR-*` it implements and the `C-*` that owns it. ID prefix `API-{RESOURCE}-{NNN}` (e.g. `API-AUTH-001`, `API-ORDER-003`).
 11. **TESTCASES.md** — executable test cases `TC-{CAT}-{NNN}` with Preconditions, Steps (numbered), Expected Result, Priority (P0/P1/P2), Type (unit/integration/e2e/manual), Test Data, Related FR/NFR/UC. Group by feature. Coverage matrix at end: every `FR-*` / `NFR-*` / `UC-*` mapped to ≥1 `TC-*`. Print orphan FR/NFR/UC.
 12. **ROADMAP.md** — milestones with hard exit gates, ASCII timeline, critical path, workstream allocation, risk-vs-schedule, release plan. Today's date and target date explicit.
+13. **EXTERNAL_DOCS.md** — registry of external APIs, specs, standards, and resources the project consumes or follows. **Pointers only — never paste external content** (it drifts). Each entry: ID (`EXT-{CAT}-{NNN}`), Provider, URL, Version/Revision, Last Verified date (YYYY-MM-DD), Type (API/SDK/STD/SVC/COMP/REF), Why We Depend, Cross-refs to `TS-*`/`C-*`/`FR-*`/`API-*`, Auth/Access level, Notes/Gotchas. Group by category. Link Health Summary flags stale entries (>6 months). Deprecation table tracks sunset resources. When EXTERNAL_DOCS is included, TECHSTACK cross-refs `EXT-*` for documentation URLs instead of inlining them.
 
 ## Workflow — brownfield-extract
 
@@ -142,6 +144,7 @@ Project has code, no docs (or sparse docs). Reverse-engineer to PRD-grade docume
 6. Skim `git log --since=6.months` for active workstreams; ignore noise commits.
 7. Extract tech stack from manifests (`package.json`, `requirements.txt`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `pom.xml`, `Dockerfile`, IaC) — exact versions from lock files (feeds TECHSTACK.md).
 8. Map architecture: process boundaries (services, workers, daemons), network binds, container topology from `docker-compose.yml` / k8s manifests / Procfile, internal module boundaries (feeds ARCHITECTURE.md).
+9. Identify external dependencies: third-party API calls (HTTP clients, SDK imports), external service integrations, referenced standards/specs in comments or config, compliance markers. Record URLs from code comments, README links, or config files (feeds EXTERNAL_DOCS.md).
 
 ### B2. Synthesize Discovered Scope
 
@@ -177,6 +180,7 @@ Run G2–G4 with discovered scope. Cite source verbatim:
 - Each TESTCASES `TC-*` derives from an existing test file: `Source: tests/auth_test.py::test_login_expiry`.
 - Each DESIGN.md token cites the existing theme file: `Source: tailwind.config.ts:12` or `Source: src/styles/variables.css:5`. If no theme file exists, source from user brand brief.
 - Each API_REFERENCE `API-*` cites the route handler: `Source: src/routes/auth.ts:45` or `Source: api/v1/orders.py::OrderView`. If OpenAPI spec exists, cross-reference but don't copy — hand-curate intent and policy.
+- Each EXTERNAL_DOCS `EXT-*` cites the code that imports/calls the external resource: `Source: src/services/payment.ts:3 (import stripe)` or `Source: docker-compose.yml:15 (redis service)`. Set `Last Verified` to today's date.
 - ROADMAP backfills past milestones from git tags + future from user plans.
 
 Status remains `Draft` until user signs off, then bump to `Final`.
@@ -200,6 +204,8 @@ Docs exist; something changed. Identify what, propagate carefully, bump versions
 | New table/column | Minor | DATABASE; cascade SRS if observable, TESTCASES if behavior changes |
 | New/changed API endpoint | Minor | API_REFERENCE; cascade TC if behavior changes |
 | API versioning or auth scheme change | Major | API_REFERENCE; cascade SRS if contract-breaking |
+| New external dependency / API version change | Minor | EXTERNAL_DOCS; cascade TECHSTACK if SDK version changes |
+| External resource sunset / URL moved | Patch or Minor | EXTERNAL_DOCS only (update URL + Last Verified) |
 | New test case for existing requirement | Patch or Minor | TESTCASES only |
 | Test case fails to reflect requirement (contradiction) | Patch | Fix TESTCASES; if requirement wrong, fix SRS first |
 | New milestone or date slip | Minor | ROADMAP only; do NOT touch upstream |
@@ -222,6 +228,7 @@ DESIGN changes     → none upstream (DESIGN is leaf — visual only)
 DB changes         → SRS? TC? (only if behavior observable)
 API changes        → TC? (only if behavior observable; API is near-leaf)
 TC changes         → none upstream (TC is leaf)
+EXT_DOCS changes   → none upstream (EXT_DOCS is leaf — a reference catalog)
 ```
 
 Lower-numbered docs cascade to higher; never the reverse. If you find yourself "patching SRS to match new code," stop — fix PRD first.
@@ -266,6 +273,8 @@ For each category, list discrepancies:
 | Test orphan | Test exists in code but not catalogued as `TC-*`; or `TC-*` references a test file that no longer exists |
 | API orphan | Public API endpoint in code with no `API-*` entry in API_REFERENCE (when API_REFERENCE is included) |
 | Missing optional doc | Project has grown to need a previously-skipped doc (e.g. backend service now has UI → needs SITEMAP/DESIGN) |
+| External dep without EXT-* | Code imports/calls a third-party API or service not catalogued in EXTERNAL_DOCS (when EXTERNAL_DOCS is included) |
+| Stale EXT-* (link rot) | `EXT-*` entry has `Last Verified` older than 6 months — URL may be broken or content changed |
 
 ### R3. Produce REVIEW_REPORT
 
@@ -293,6 +302,7 @@ Do NOT auto-apply fixes. User reviews report and either:
 | `API-*` | API_REFERENCE | `API-AUTH-001`, `API-ORDER-003` |
 | `TC-*` | TESTCASES | `TC-AUTH-001` |
 | `M*` | ROADMAP | `M0`, `M1` |
+| `EXT-*` | EXTERNAL_DOCS | `EXT-API-001`, `EXT-STD-003` |
 
 **Reuse IDs verbatim across docs.** Never invent parallel ID universes. Every downstream doc ends with a traceability section mapping its IDs back to upstream SRS/PRD.
 
@@ -313,6 +323,7 @@ ROADMAP §10 must list all included docs in this order (mark skipped docs as "N/
 11. API_REFERENCE — API contracts (endpoints, auth, errors) — OPTIONAL
 12. TESTCASES — verification — **MANDATORY**
 13. ROADMAP — when — **MANDATORY**
+14. EXTERNAL_DOCS — external APIs, specs, resources we consume — OPTIONAL
 
 ## Verification (Run After Writing All Included Docs)
 
@@ -327,12 +338,15 @@ Checks apply only to docs included by archetype. Skip checks for omitted docs.
 7. **Component coverage** — every `C-*` in ARCHITECTURE is implemented by ≥1 `FR-*` (or marked `Status: Infrastructure`); every `FR-*` cites the `C-*` that implements it.
 8. **ADR coverage** — every `AD-*` cites Status (`Proposed`/`Accepted`/`Superseded`/`Inferred`) and consequences. Superseded ADRs link to replacement.
 9. **Mermaid validity** — paste each diagram into mermaid.live to confirm parse.
-10. **Hierarchy** — ROADMAP §10 lists all 13 docs in canonical order (skipped docs marked "N/A").
+10. **Hierarchy** — ROADMAP §10 lists all 14 docs in canonical order (skipped docs marked "N/A").
 11. **Footer parity** — included downstream docs end with Traceability + Change Log; PRD/ROADMAP end with Change Log only.
 12. **No invented prefixes** — grep for ID prefixes; every prefix appears in `reference/STYLE.md` registry.
 13. **Design token validity** — DESIGN.md YAML frontmatter parses without error; no duplicate `##` section headings; token references (`{path.to.token}`) resolve to defined values; required sections present in spec order. *(Skip if DESIGN omitted.)*
 14. **API coverage** — every `API-*` in API_REFERENCE traces to ≥1 `FR-*` and ≥1 `C-*`. Every public endpoint in code has a corresponding `API-*` entry. *(Skip if API_REFERENCE omitted.)*
-15. **Doc set audit** — PRD §"Doc Set" lists all 13 docs with status (Included / Skipped + reason). No doc is silently absent.
+15. **EXT coverage** — every `EXT-*` in EXTERNAL_DOCS is cited by ≥1 upstream doc (`TS-*`, `C-*`, `FR-*`, or `API-*`). Print orphan `EXT-*` entries. *(Skip if EXTERNAL_DOCS omitted.)*
+16. **External-dep coverage** — every TECHSTACK entry consuming a third-party service/API has a matching `EXT-*` entry. *(Skip if EXTERNAL_DOCS omitted.)*
+17. **Link freshness** — flag `EXT-*` entries with `Last Verified` older than 6 months. *(Skip if EXTERNAL_DOCS omitted.)*
+18. **Doc set audit** — PRD §"Doc Set" lists all 14 docs with status (Included / Skipped + reason). No doc is silently absent.
 
 ## Common Mistakes
 
@@ -358,8 +372,12 @@ Checks apply only to docs included by archetype. Skip checks for omitted docs.
 | `TC-*` with no `Related FR` | Orphan test — either trace to a requirement or delete |
 | Dumping OpenAPI/Swagger output into API_REFERENCE | API_REFERENCE is hand-curated contracts, not generated spec — captures design intent, examples, and policy |
 | Writing API_REFERENCE for project with no public/internal API | Skip it — archetype decides; CLI tools and pure-UI apps rarely need it |
-| Producing all 13 docs for a simple library | Use archetype selection — libraries skip SITEMAP, DESIGN, USERFLOWS, DATABASE |
+| Producing all 14 docs for a simple library | Use archetype selection — libraries skip SITEMAP, DESIGN, USERFLOWS, DATABASE |
 | Silently skipping an optional doc without recording it | Always record skipped docs in PRD §"Doc Set" with reason |
+| Pasting external API docs into EXTERNAL_DOCS | EXTERNAL_DOCS is pointers only — URL + version + last-verified date. Pasted content drifts instantly |
+| Missing `Last Verified` date on `EXT-*` entries | Every entry needs a verification date — without it, link rot is undetectable |
+| Conflating TECHSTACK and EXTERNAL_DOCS | TECHSTACK = what we install (SDK v3.2.1). EXTERNAL_DOCS = where to read about it (Stripe API Reference v2024-01-01) |
+| Inlining doc URLs in TECHSTACK when EXTERNAL_DOCS is included | When EXTERNAL_DOCS exists, TECHSTACK cross-refs `EXT-*` for doc URLs — single source of truth for external links |
 
 ## Output Conventions
 
@@ -383,4 +401,5 @@ Checks apply only to docs included by archetype. Skip checks for omitted docs.
 - Generated doc is mostly restating PRD verbatim → trim; downstream docs add structure, not repetition
 - Writing `AD-*` for a decision already in code with no context → mark Status: `Inferred`, ask user for original rationale
 - About to write API_REFERENCE but project has no API endpoints → skip, record in PRD §"Doc Set"
-- About to produce all 13 docs without checking archetype → stop, determine archetype first, skip irrelevant docs
+- About to produce all 14 docs without checking archetype → stop, determine archetype first, skip irrelevant docs
+- ARCHITECTURE cites third-party integration but no `EXT-*` exists (when EXTERNAL_DOCS included) → stop, add the `EXT-*` entry first

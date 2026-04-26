@@ -17,6 +17,7 @@ Single source of truth for every technology choice on this project. Pinned versi
 - IDs: `TS-{CAT}-{NN}` where CAT ∈ {`LANG`, `FW`, `RT`, `INFRA`, `OBS`, `SEC`, `BUILD`, `TEST`, `DATA`, `MSG`, `CACHE`, `CDN`}.
 - Versions: pinned (no caret/tilde ranges in this doc).
 - Lifecycle: `Adopted` (in use), `Trial` (limited use, evaluating), `Hold` (do not adopt new uses), `Deprecated` (planned removal, cite replacement).
+- Documentation URLs: When `EXTERNAL_DOCS.md` is included in the doc set, cross-ref `EXT-*` IDs instead of inlining URLs (single source of truth for external links). When EXTERNAL_DOCS is skipped, inline URLs are acceptable.
 
 ## 3. Stack at a Glance
 
