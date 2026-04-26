@@ -1,6 +1,6 @@
 # Style Guide — Product Docs
 
-Shared conventions across all 8 docs. Apply to every file in `docs/`.
+Shared conventions across all 12 docs. Apply to every file in `docs/`.
 
 ## Header Block (REQUIRED on every doc)
 
@@ -23,6 +23,8 @@ Rules:
 - Date uses ISO 8601 (`2026-04-25`). Never relative.
 - Source field cites upstream doc + version. Top-level doc (PRD) cites user brief or commit hash.
 - Status: `Draft` while iterating, `Review` when handed to user, `Final` when frozen for the milestone.
+
+**Exception — DESIGN.md:** DESIGN.md uses YAML frontmatter for design tokens (per the [Google design.md spec](https://github.com/google-labs-code/design.md)). Header fields are merged into the YAML block as lowercase keys (`version`, `date`, `status`, `source`, `owner`) alongside `colors`, `typography`, etc. The markdown body begins after the closing `---`. No separate markdown header block.
 
 ## Versioning Rules
 
@@ -97,7 +99,7 @@ Always tag the language: ```` ```sql ````, ```` ```python ````, ```` ```yaml ```
 - Other doc: `[SRS §4.1](./SRS.md#41-functional-requirements)` (relative link + anchor).
 - Upstream ID: bare ID in backticks, e.g. `` `FR-AUTH-001` ``.
 
-## Footer (REQUIRED on docs 2–10)
+## Footer (REQUIRED on docs 2–11)
 
 Every downstream doc ends with:
 
