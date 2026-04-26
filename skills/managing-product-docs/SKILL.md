@@ -1,22 +1,22 @@
 ---
 name: managing-product-docs
-description: Use when user asks to create, extract, update, refine, or audit product documentation (PRD, tech stack, architecture, SRS, sitemap, design system, roadmap, use cases, user flows, business rules, database design, test cases) for a software project — covers greenfield init from a brief, brownfield extraction from existing code, incremental updates after scope/feature/tech/architecture/design changes, and gap audits to detect drift between docs and code.
+description: Use when user asks to create, extract, update, refine, or audit product documentation (PRD, tech stack, architecture, SRS, sitemap, design system, roadmap, use cases, user flows, business rules, database design, API reference, test cases) for a software project — covers greenfield init from a brief, brownfield extraction from existing code, incremental updates after scope/feature/tech/architecture/design changes, and gap audits to detect drift between docs and code.
 ---
 
 # Creating Product Docs
 
 ## Overview
 
-Produce a coherent 12-doc set for software project planning. Docs share stable IDs and cross-reference each other so implementation can begin without ambiguity. Each doc has a single, distinct purpose — no overlap.
+Produce a coherent doc set (up to 13 docs) for software project planning. Docs share stable IDs and cross-reference each other so implementation can begin without ambiguity. Each doc has a single, distinct purpose — no overlap.
 
-**Constants, consistent, repeatable.** Every project produced with this skill emits the same 12 files, same headers, same ID conventions, same section structure. Differences live in content only. Use the templates and style guide bundled with this skill — do not freestyle.
+**Consistent, repeatable, archetype-driven.** Every project produced with this skill starts from the same templates, same headers, same ID conventions, same section structure. The **project archetype** determines which docs are mandatory vs optional — not every project needs all 13. Differences live in content and doc selection only. Use the templates and style guide bundled with this skill — do not freestyle.
 
 ## Required Companion Files
 
 This skill ships with reusable scaffolding. **Always read these before writing:**
 
 - `reference/STYLE.md` — header block format, ID prefix registry, table conventions, Mermaid theme, footer format. Single source of truth for formatting.
-- `templates/PRD.md`, `templates/TECHSTACK.md`, `templates/ARCHITECTURE.md`, `templates/BUSINESS_RULES.md`, `templates/SRS.md`, `templates/USECASES.md`, `templates/USERFLOWS.md`, `templates/SITEMAP.md`, `templates/DESIGN.md`, `templates/DATABASE.md`, `templates/TESTCASES.md`, `templates/ROADMAP.md` — skeleton for each doc with placeholder syntax `{{PLACEHOLDER}}`.
+- `templates/PRD.md`, `templates/TECHSTACK.md`, `templates/ARCHITECTURE.md`, `templates/BUSINESS_RULES.md`, `templates/SRS.md`, `templates/USECASES.md`, `templates/USERFLOWS.md`, `templates/SITEMAP.md`, `templates/DESIGN.md`, `templates/DATABASE.md`, `templates/API_REFERENCE.md`, `templates/TESTCASES.md`, `templates/ROADMAP.md` — skeleton for each doc with placeholder syntax `{{PLACEHOLDER}}`.
 - `templates/REVIEW_REPORT.md` — gap-audit output template for **review** mode.
 
 Workflow: copy template → fill placeholders → keep section order intact → never delete required sections (Change Log, Traceability).
@@ -32,7 +32,7 @@ Workflow: copy template → fill placeholders → keep section order intact → 
 **Do NOT use:**
 - Single one-off doc (just write that one — don't force the full set)
 - Architecture decision records (ADRs), RFCs, or design proposals (different format)
-- API reference / SDK docs (different lifecycle)
+- Auto-generated API docs (OpenAPI/Swagger output) — this skill covers hand-curated API contracts, not generated references
 
 ## Operation Modes
 
@@ -40,8 +40,8 @@ Pick ONE mode at the start of every invocation. Mode determines which phases run
 
 | Mode | Trigger | Inputs | Outputs |
 |------|---------|--------|---------|
-| **greenfield-init** | No `docs/` exists; user has a brief or idea | User brief + clarifying Q&A | All 12 docs, v1.0, Status=Draft |
-| **brownfield-extract** | `docs/` empty/sparse; codebase exists | Code + git history + README + user interviews | All 12 docs, v1.0, Status=Draft, "Source: extracted from commit `<sha>`" |
+| **greenfield-init** | No `docs/` exists; user has a brief or idea | User brief + clarifying Q&A | All mandatory + selected optional docs per archetype, v1.0, Status=Draft |
+| **brownfield-extract** | `docs/` empty/sparse; codebase exists | Code + git history + README + user interviews | All mandatory + selected optional docs per archetype, v1.0, Status=Draft, "Source: extracted from commit `<sha>`" |
 | **update** | Docs exist (≥v1.0); scope/feature/tech/architecture/decision changed | Existing docs + change request | Affected docs only, version bumped, Change Log updated |
 | **review** | Docs exist; user wants drift audit | Existing docs + current code + recent git log | `REVIEW_REPORT.md` listing gaps, no doc edits unless approved |
 
@@ -53,24 +53,44 @@ Pick ONE mode at the start of every invocation. Mode determines which phases run
 5. If `docs/PRD.md` exists and user says "review", "audit", "check", "are docs current" → review.
 6. When ambiguous, ask user which mode they want.
 
-## The 12-Doc Set
+## The 13-Doc Set
 
-| Order | File | Purpose | Source |
-|-------|------|---------|--------|
-| 1 | `PRD.md` | What we build (features, scope, decisions) — business focus, no tech stack or source code | User brief + clarifying questions |
-| 2 | `TECHSTACK.md` | Concrete technology choices (`TS-*` IDs), versions, alternatives considered | User brief + repo manifests |
-| 3 | `ARCHITECTURE.md` | Components (`C-*`), deployment topology, integration points, ADR-lite decisions (`AD-*`) | PRD features + TECHSTACK |
-| 4 | `BUSINESS_RULES.md` | Why (policy that survives code rewrites) | PRD constraints |
-| 5 | `SRS.md` | Testable requirements with `FR-*`/`NFR-*` IDs | PRD features + ARCHITECTURE |
-| 6 | `USECASES.md` | Actor-driven interactions (Cockburn-style) | SRS + actors |
-| 7 | `USERFLOWS.md` | End-to-end journeys (Mermaid) | UseCases stitched together |
-| 8 | `SITEMAP.md` | UI route/page hierarchy | PRD §5.2 UI pages |
-| 9 | `DESIGN.md` | Visual design system — tokens, colors, typography, layout, components (Google design.md format) | PRD §5.2 UI pages + brand brief |
-| 10 | `DATABASE.md` | Physical schema (DDL, ER diagram, indexes) | PRD §5.1 entities + SRS |
-| 11 | `TESTCASES.md` | Executable test cases (`TC-*`) traced to FR/NFR/UC | SRS + USECASES |
-| 12 | `ROADMAP.md` | Milestones, dates, exit gates | All upstream docs |
+| Order | File | Required | Purpose | Source |
+|-------|------|----------|---------|--------|
+| 1 | `PRD.md` | **MANDATORY** | What we build (features, scope, decisions) — business focus, no tech stack or source code | User brief + clarifying questions |
+| 2 | `TECHSTACK.md` | **MANDATORY** | Concrete technology choices (`TS-*` IDs), versions, alternatives considered | User brief + repo manifests |
+| 3 | `ARCHITECTURE.md` | **MANDATORY** | Components (`C-*`), deployment topology, integration points, ADR-lite decisions (`AD-*`) | PRD features + TECHSTACK |
+| 4 | `BUSINESS_RULES.md` | OPTIONAL | Why (policy that survives code rewrites) | PRD constraints |
+| 5 | `SRS.md` | **MANDATORY** | Testable requirements with `FR-*`/`NFR-*` IDs | PRD features + ARCHITECTURE |
+| 6 | `USECASES.md` | OPTIONAL | Actor-driven interactions (Cockburn-style) | SRS + actors |
+| 7 | `USERFLOWS.md` | OPTIONAL | End-to-end journeys (Mermaid) | UseCases stitched together |
+| 8 | `SITEMAP.md` | OPTIONAL | UI route/page hierarchy | PRD §5.2 UI pages |
+| 9 | `DESIGN.md` | OPTIONAL | Visual design system — tokens, colors, typography, layout, components (Google design.md format) | PRD §5.2 UI pages + brand brief |
+| 10 | `DATABASE.md` | OPTIONAL | Physical schema (DDL, ER diagram, indexes) | PRD §5.1 entities + SRS |
+| 11 | `API_REFERENCE.md` | OPTIONAL | Hand-curated API contracts — endpoints, auth, errors, versioning, examples (`API-*` IDs) | SRS + ARCHITECTURE |
+| 12 | `TESTCASES.md` | **MANDATORY** | Executable test cases (`TC-*`) traced to FR/NFR/UC | SRS + USECASES |
+| 13 | `ROADMAP.md` | **MANDATORY** | Milestones, dates, exit gates | All upstream docs |
 
 All files go to `docs/` at project root.
+
+## Project Archetypes
+
+The archetype determines which OPTIONAL docs to include. **MANDATORY docs are always produced.** Detect archetype during Discovery (G1/B2) or ask user.
+
+| Archetype | Always include (MANDATORY) | Include (OPTIONAL) | Typically skip |
+|-----------|---------------------------|-------------------|----------------|
+| **Web App** (UI + API + DB) | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, USERFLOWS, SITEMAP, DESIGN, DATABASE, API_REFERENCE | — |
+| **Backend Service / API** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE, API_REFERENCE | SITEMAP, DESIGN, USERFLOWS |
+| **Library / SDK** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | API_REFERENCE, USECASES | SITEMAP, DESIGN, USERFLOWS, DATABASE |
+| **CLI Tool** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE | SITEMAP, DESIGN, USERFLOWS, API_REFERENCE |
+| **Mobile App** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | USECASES, USERFLOWS, DESIGN, DATABASE, API_REFERENCE | SITEMAP (use USERFLOWS instead) |
+| **Internal Tool / Admin** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | USECASES, SITEMAP, DATABASE | DESIGN (or lite version), USERFLOWS, API_REFERENCE |
+
+**Rules:**
+- User can override any archetype selection ("I want DESIGN even though it's a CLI tool" → include it).
+- When a doc is skipped, its downstream dependents still work — cross-refs to skipped docs are omitted, not broken.
+- Skipped docs are recorded in PRD §"Doc Set" section so the decision is auditable.
+- If project evolves (backend grows a UI), re-evaluate archetype and add previously-skipped docs.
 
 ## Workflow — greenfield-init
 
@@ -84,7 +104,7 @@ All files go to `docs/` at project root.
 ### G2. PRD First
 
 PRD is the only doc that captures decisions directly. Sections:
-- Overview, Personas, Features (`F1`, `F2`, ...), Solution Context (entities + UI pages only — no tech stack or deployment), NFRs, Milestones (high-level only — detail goes to ROADMAP), Risks, **Resolved Decisions**, Glossary.
+- Overview, Personas, Features (`F1`, `F2`, ...), Solution Context (entities + UI pages only — no tech stack or deployment), NFRs, Milestones (high-level only — detail goes to ROADMAP), Risks, Open Questions, **Doc Set** (archetype + included/skipped status for all 13 docs), **Resolved Decisions**, Glossary.
 - "Open Questions" section at end with suggested defaults — user resolves these before continuing.
 
 ### G3. Loop on Open Questions
@@ -93,7 +113,7 @@ User answers → update PRD's Resolved Decisions section (preserves audit trail)
 
 ### G4. Generate Downstream Docs in Strict Order
 
-For EACH doc: `cp templates/{NAME}.md docs/{NAME}.md` mentally — start from the template, never from scratch. Apply `reference/STYLE.md` header. Each builds on the prior; reordering causes drift:
+For EACH doc selected by archetype: `cp templates/{NAME}.md docs/{NAME}.md` mentally — start from the template, never from scratch. Apply `reference/STYLE.md` header. Each builds on the prior; reordering causes drift. **Skip docs not selected by archetype — record skipped docs in PRD §"Doc Set".**
 
 1. **TECHSTACK.md** — concrete tech choices keyed by category (`TS-LANG-01`, `TS-FW-02`, `TS-RT-03`, `TS-INFRA-04`, `TS-OBS-05`, `TS-SEC-06`, `TS-BUILD-07`, `TS-TEST-08`). Each entry: Choice, Version (pinned), Rationale, Alternatives considered + reject reason, License, Source (user brief, repo manifests, or resolved decision). Lock file references where applicable (`package-lock.json`, `poetry.lock`, etc.).
 2. **ARCHITECTURE.md** — system decomposition. Components `C-{NN}` with responsibility, owned data, exposed interface, dependencies. Mermaid `flowchart LR` for component graph, `C4`-lite context/container/component levels. Deployment topology (process boundaries, network binds, container layout). Integration points (external services, queues, IPC). ADR-lite block: `AD-{NN}` with Decision / Context / Consequences / Status. Cross-ref each component to TS-* it consumes.
@@ -104,8 +124,9 @@ For EACH doc: `cp templates/{NAME}.md docs/{NAME}.md` mentally — start from th
 7. **SITEMAP.md** — full route tree, sidebar/topbar layout, persistent UI elements (e.g. always-visible kill switch), modal inventory, nav rules (auth redirect, 401 handling). Mark every route as `gated` or `public`.
 8. **DESIGN.md** — visual design system following the [Google design.md spec](https://github.com/google-labs-code/design.md). YAML frontmatter contains design tokens (colors, typography, spacing, rounded, components) merged with doc header fields (version, date, status, source, owner). Markdown body sections in order: Overview (brand personality), Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Token references use `{path.to.token}` syntax. Source: PRD §5.2 UI pages + user brand brief. Omit sections not relevant to the project but keep section order.
 9. **DATABASE.md** — Mermaid `erDiagram`, enums, full table definitions (columns, types, constraints, defaults), indexes (including partial indexes), partitioning strategy (RANGE by month for time-series), retention, role permissions (separate `migrate` / `app` / `audit` roles), backup commands, restore procedure, sample DDL excerpts for the most-referenced tables. Append-only audit tables enforced via `REVOKE UPDATE/DELETE`.
-10. **TESTCASES.md** — executable test cases `TC-{CAT}-{NNN}` with Preconditions, Steps (numbered), Expected Result, Priority (P0/P1/P2), Type (unit/integration/e2e/manual), Test Data, Related FR/NFR/UC. Group by feature. Coverage matrix at end: every `FR-*` / `NFR-*` / `UC-*` mapped to ≥1 `TC-*`. Print orphan FR/NFR/UC.
-11. **ROADMAP.md** — milestones with hard exit gates, ASCII timeline, critical path, workstream allocation, risk-vs-schedule, release plan. Today's date and target date explicit.
+10. **API_REFERENCE.md** — hand-curated API contract doc. Not auto-generated — captures design intent, not implementation artifact. Sections: API Overview (base URL, versioning scheme, auth method), Authentication & Authorization (token flow, scopes, key rotation), Endpoints by Resource (grouped by domain; each endpoint: method, path, description, request params/body, response schema, error codes, example request/response, related `FR-*`/`C-*`), Common Schemas (shared request/response objects), Error Codes (global error format, code registry), Rate Limits & Quotas, Pagination & Filtering conventions, Webhooks/Events (if applicable), Deprecation Policy. Cross-ref each endpoint to the `FR-*` it implements and the `C-*` that owns it. ID prefix `API-{RESOURCE}-{NNN}` (e.g. `API-AUTH-001`, `API-ORDER-003`).
+11. **TESTCASES.md** — executable test cases `TC-{CAT}-{NNN}` with Preconditions, Steps (numbered), Expected Result, Priority (P0/P1/P2), Type (unit/integration/e2e/manual), Test Data, Related FR/NFR/UC. Group by feature. Coverage matrix at end: every `FR-*` / `NFR-*` / `UC-*` mapped to ≥1 `TC-*`. Print orphan FR/NFR/UC.
+12. **ROADMAP.md** — milestones with hard exit gates, ASCII timeline, critical path, workstream allocation, risk-vs-schedule, release plan. Today's date and target date explicit.
 
 ## Workflow — brownfield-extract
 
@@ -155,6 +176,7 @@ Run G2–G4 with discovered scope. Cite source verbatim:
 - Each DATABASE table copies the existing schema verbatim (do not redesign).
 - Each TESTCASES `TC-*` derives from an existing test file: `Source: tests/auth_test.py::test_login_expiry`.
 - Each DESIGN.md token cites the existing theme file: `Source: tailwind.config.ts:12` or `Source: src/styles/variables.css:5`. If no theme file exists, source from user brand brief.
+- Each API_REFERENCE `API-*` cites the route handler: `Source: src/routes/auth.ts:45` or `Source: api/v1/orders.py::OrderView`. If OpenAPI spec exists, cross-reference but don't copy — hand-curate intent and policy.
 - ROADMAP backfills past milestones from git tags + future from user plans.
 
 Status remains `Draft` until user signs off, then bump to `Final`.
@@ -176,6 +198,8 @@ Docs exist; something changed. Identify what, propagate carefully, bump versions
 | New ADR or reverse existing ADR | Minor or Major | ARCHITECTURE; cascade per affected components |
 | New requirement detail without scope change | Minor | SRS; cascade UC/UF if user-facing, TESTCASES always |
 | New table/column | Minor | DATABASE; cascade SRS if observable, TESTCASES if behavior changes |
+| New/changed API endpoint | Minor | API_REFERENCE; cascade TC if behavior changes |
+| API versioning or auth scheme change | Major | API_REFERENCE; cascade SRS if contract-breaking |
 | New test case for existing requirement | Patch or Minor | TESTCASES only |
 | Test case fails to reflect requirement (contradiction) | Patch | Fix TESTCASES; if requirement wrong, fix SRS first |
 | New milestone or date slip | Minor | ROADMAP only; do NOT touch upstream |
@@ -187,15 +211,16 @@ Docs exist; something changed. Identify what, propagate carefully, bump versions
 Before editing, list every doc affected. Use the source-of-truth hierarchy:
 
 ```
-PRD changes        → TECHSTACK? ARCH? BR? SRS? UC? UF? SITEMAP? DESIGN? DB? TC? ROADMAP?
+PRD changes        → TECHSTACK? ARCH? BR? SRS? UC? UF? SITEMAP? DESIGN? DB? API? TC? ROADMAP?
 TECHSTACK changes  → ARCH? SRS? (only if behavior changes) DB? (engine swap)
-ARCH changes       → SRS? DB? SITEMAP? (only if surface changes)
+ARCH changes       → SRS? DB? API? SITEMAP? (only if surface changes)
 BR changes         → SRS? UC? TC?
-SRS changes        → UC? UF? DB? TC (always — every FR/NFR needs ≥1 TC)
+SRS changes        → UC? UF? DB? API? TC (always — every FR/NFR needs ≥1 TC)
 UC changes         → UF? SITEMAP? TC?
 SITEMAP changes    → DESIGN? (if component names referenced in design tokens)
 DESIGN changes     → none upstream (DESIGN is leaf — visual only)
 DB changes         → SRS? TC? (only if behavior observable)
+API changes        → TC? (only if behavior observable; API is near-leaf)
 TC changes         → none upstream (TC is leaf)
 ```
 
@@ -239,6 +264,8 @@ For each category, list discrepancies:
 | Stale dependency | `package.json` / `requirements.txt` / lock file differs from TECHSTACK pinned versions |
 | Stale architecture | New service/process/queue exists in deploy config but no `C-*` in ARCHITECTURE |
 | Test orphan | Test exists in code but not catalogued as `TC-*`; or `TC-*` references a test file that no longer exists |
+| API orphan | Public API endpoint in code with no `API-*` entry in API_REFERENCE (when API_REFERENCE is included) |
+| Missing optional doc | Project has grown to need a previously-skipped doc (e.g. backend service now has UI → needs SITEMAP/DESIGN) |
 
 ### R3. Produce REVIEW_REPORT
 
@@ -263,6 +290,7 @@ Do NOT auto-apply fixes. User reviews report and either:
 | `FR-*`, `NFR-*` | SRS | `FR-AUTH-001`, `NFR-PERF-003` |
 | `UC-*` | UseCases | `UC-BO-02` |
 | `UF-*` | UserFlows | `UF-08` |
+| `API-*` | API_REFERENCE | `API-AUTH-001`, `API-ORDER-003` |
 | `TC-*` | TESTCASES | `TC-AUTH-001` |
 | `M*` | ROADMAP | `M0`, `M1` |
 
@@ -270,36 +298,41 @@ Do NOT auto-apply fixes. User reviews report and either:
 
 ## Source-of-Truth Hierarchy
 
-ROADMAP §10 must list all 12 docs in this order:
+ROADMAP §10 must list all included docs in this order (mark skipped docs as "N/A — not applicable for this archetype"):
 
-1. PRD — what we build (business focus)
-2. TECHSTACK — what we build it with
-3. ARCHITECTURE — how the parts fit (components + ADRs)
-4. BusinessRules — why (policy that survives code)
-5. SRS — testable requirements
-6. UseCases — actor interactions
-7. UserFlows — end-to-end journeys
-8. SITEMAP — UI surface
-9. DESIGN — visual design system (tokens + components)
-10. Database — physical schema
-11. TESTCASES — verification
-12. ROADMAP — when
+1. PRD — what we build (business focus) — **MANDATORY**
+2. TECHSTACK — what we build it with — **MANDATORY**
+3. ARCHITECTURE — how the parts fit (components + ADRs) — **MANDATORY**
+4. BusinessRules — why (policy that survives code) — OPTIONAL
+5. SRS — testable requirements — **MANDATORY**
+6. UseCases — actor interactions — OPTIONAL
+7. UserFlows — end-to-end journeys — OPTIONAL
+8. SITEMAP — UI surface — OPTIONAL
+9. DESIGN — visual design system (tokens + components) — OPTIONAL
+10. Database — physical schema — OPTIONAL
+11. API_REFERENCE — API contracts (endpoints, auth, errors) — OPTIONAL
+12. TESTCASES — verification — **MANDATORY**
+13. ROADMAP — when — **MANDATORY**
 
-## Verification (Run After Writing All 12)
+## Verification (Run After Writing All Included Docs)
 
-1. **Header parity** — every doc opens with the `reference/STYLE.md` header block (Version, Date, Status, Source, Owner). DESIGN.md merges these into YAML frontmatter. No exceptions.
-2. **ID coverage** — every `FR-*` in SRS is covered by ≥1 `UC-*` (functional) or `BR-*` (policy). Print missing.
+Checks apply only to docs included by archetype. Skip checks for omitted docs.
+
+1. **Header parity** — every included doc opens with the `reference/STYLE.md` header block (Version, Date, Status, Source, Owner). DESIGN.md merges these into YAML frontmatter. No exceptions.
+2. **ID coverage** — every `FR-*` in SRS is covered by ≥1 `UC-*` (functional) or `BR-*` (policy). Print missing. *(Skip if USECASES/BUSINESS_RULES omitted — trace to TC instead.)*
 3. **Test coverage** — every `FR-*`, `NFR-*`, `UC-*` is covered by ≥1 `TC-*` in TESTCASES. Print orphan FR/NFR/UC.
-4. **Route coverage** — every gated SITEMAP route is reachable from ≥1 `UF-*`.
-5. **Schema coverage** — every entity in PRD §5.1 has full DDL in DATABASE.md, and every table in DATABASE.md traces to a PRD/SRS feature.
+4. **Route coverage** — every gated SITEMAP route is reachable from ≥1 `UF-*`. *(Skip if SITEMAP omitted.)*
+5. **Schema coverage** — every entity in PRD §5.1 has full DDL in DATABASE.md, and every table in DATABASE.md traces to a PRD/SRS feature. *(Skip if DATABASE omitted.)*
 6. **Stack coverage** — every `TS-*` entry in TECHSTACK has pinned version and lock file match. TECHSTACK is self-sourced (user brief + manifests), not from PRD.
 7. **Component coverage** — every `C-*` in ARCHITECTURE is implemented by ≥1 `FR-*` (or marked `Status: Infrastructure`); every `FR-*` cites the `C-*` that implements it.
 8. **ADR coverage** — every `AD-*` cites Status (`Proposed`/`Accepted`/`Superseded`/`Inferred`) and consequences. Superseded ADRs link to replacement.
 9. **Mermaid validity** — paste each diagram into mermaid.live to confirm parse.
-10. **Hierarchy** — ROADMAP §10 lists all 12 docs in canonical order.
-11. **Footer parity** — docs 2–11 end with Traceability + Change Log; PRD/ROADMAP end with Change Log only.
+10. **Hierarchy** — ROADMAP §10 lists all 13 docs in canonical order (skipped docs marked "N/A").
+11. **Footer parity** — included downstream docs end with Traceability + Change Log; PRD/ROADMAP end with Change Log only.
 12. **No invented prefixes** — grep for ID prefixes; every prefix appears in `reference/STYLE.md` registry.
-13. **Design token validity** — DESIGN.md YAML frontmatter parses without error; no duplicate `##` section headings; token references (`{path.to.token}`) resolve to defined values; required sections present in spec order.
+13. **Design token validity** — DESIGN.md YAML frontmatter parses without error; no duplicate `##` section headings; token references (`{path.to.token}`) resolve to defined values; required sections present in spec order. *(Skip if DESIGN omitted.)*
+14. **API coverage** — every `API-*` in API_REFERENCE traces to ≥1 `FR-*` and ≥1 `C-*`. Every public endpoint in code has a corresponding `API-*` entry. *(Skip if API_REFERENCE omitted.)*
+15. **Doc set audit** — PRD §"Doc Set" lists all 13 docs with status (Included / Skipped + reason). No doc is silently absent.
 
 ## Common Mistakes
 
@@ -308,7 +341,7 @@ ROADMAP §10 must list all 12 docs in this order:
 | Writing SRS before resolving PRD open questions | Always loop on PRD first; never proceed with vague reqs |
 | Inventing parallel ID universes (`REQ-*` and `FR-*`) | Reuse upstream IDs verbatim |
 | Auto-generating long docs without user input on tradeoffs | Pause and ask — generic docs are worse than no docs |
-| Skipping BUSINESS_RULES.md | Leaves "why" undocumented; rewrites lose intent |
+| Skipping BUSINESS_RULES.md when project has policy/compliance constraints | Even if archetype says optional, include it when non-trivial policy exists — rewrites lose intent without it |
 | Confusing UseCase and UserFlow | UC = one actor interaction; UF = multi-UC end-to-end journey |
 | Confusing TECHSTACK and ARCHITECTURE | TECHSTACK = what tech (versions, libs); ARCHITECTURE = how parts compose (components, deployment, decisions) |
 | Confusing ARCHITECTURE and SRS | ARCHITECTURE = structure & decisions; SRS = behavior requirements. Components describe shape, FRs describe what they must do |
@@ -323,6 +356,10 @@ ROADMAP §10 must list all 12 docs in this order:
 | Design tokens that don't match prose colors | Token values in YAML frontmatter are normative; prose uses descriptive names that map to tokens |
 | ADR without Consequences section | Decision without consequences = wishful thinking; document tradeoffs honestly |
 | `TC-*` with no `Related FR` | Orphan test — either trace to a requirement or delete |
+| Dumping OpenAPI/Swagger output into API_REFERENCE | API_REFERENCE is hand-curated contracts, not generated spec — captures design intent, examples, and policy |
+| Writing API_REFERENCE for project with no public/internal API | Skip it — archetype decides; CLI tools and pure-UI apps rarely need it |
+| Producing all 13 docs for a simple library | Use archetype selection — libraries skip SITEMAP, DESIGN, USERFLOWS, DATABASE |
+| Silently skipping an optional doc without recording it | Always record skipped docs in PRD §"Doc Set" with reason |
 
 ## Output Conventions
 
@@ -345,3 +382,5 @@ ROADMAP §10 must list all 12 docs in this order:
 - Tempted to add a feature not in PRD → put it in a "Future" section, don't include in this iteration
 - Generated doc is mostly restating PRD verbatim → trim; downstream docs add structure, not repetition
 - Writing `AD-*` for a decision already in code with no context → mark Status: `Inferred`, ask user for original rationale
+- About to write API_REFERENCE but project has no API endpoints → skip, record in PRD §"Doc Set"
+- About to produce all 13 docs without checking archetype → stop, determine archetype first, skip irrelevant docs

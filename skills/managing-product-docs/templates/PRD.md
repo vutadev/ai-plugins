@@ -74,7 +74,27 @@ Number each. Suggested default in italics. User must resolve before moving to SR
 1. {{Question}}? *Suggested: {{default}}*
 2. ...
 
-## 10. Resolved Decisions
+## 10. Doc Set
+
+Project archetype: **{{archetype}}**
+
+| # | Document | Status | Reason |
+|---|----------|--------|--------|
+| 1 | PRD | Included | MANDATORY |
+| 2 | TECHSTACK | Included | MANDATORY |
+| 3 | ARCHITECTURE | Included | MANDATORY |
+| 4 | BUSINESS_RULES | {{Included / Skipped}} | {{reason}} |
+| 5 | SRS | Included | MANDATORY |
+| 6 | USECASES | {{Included / Skipped}} | {{reason}} |
+| 7 | USERFLOWS | {{Included / Skipped}} | {{reason}} |
+| 8 | SITEMAP | {{Included / Skipped}} | {{reason}} |
+| 9 | DESIGN | {{Included / Skipped}} | {{reason}} |
+| 10 | DATABASE | {{Included / Skipped}} | {{reason}} |
+| 11 | API_REFERENCE | {{Included / Skipped}} | {{reason}} |
+| 12 | TESTCASES | Included | MANDATORY |
+| 13 | ROADMAP | Included | MANDATORY |
+
+## 11. Resolved Decisions
 
 Append-only log. Once user resolves an open question, move it here.
 

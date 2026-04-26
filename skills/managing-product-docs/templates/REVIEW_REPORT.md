@@ -17,15 +17,16 @@
 
 ## 2. Methodology
 
-- Docs reviewed: list all 8 by name + version.
-- Code surface walked: routes, schema, env vars, feature flags, tests.
+- Docs reviewed: list all included docs by name + version.
+- Docs correctly omitted (per archetype): list skipped docs + archetype justification.
+- Code surface walked: routes, schema, env vars, feature flags, tests, API endpoints.
 - Tools used (if any): grep patterns, schema dump, OpenAPI introspection.
 
 ## 3. Findings
 
 ### F-001 {{Short title}} — Severity: {{Critical|Major|Minor|Cosmetic}}
 
-- **Type:** {{Code-without-doc | Doc-without-code | Drift | Stale-decision | Missing-trace | Outdated-milestone | Stale-dependency}}
+- **Type:** {{Code-without-doc | Doc-without-code | Drift | Stale-decision | Missing-trace | Outdated-milestone | Stale-dependency | Missing-optional-doc}}
 - **Where in code:** `path/to/file.py:NN`
 - **Where in docs:** `docs/SRS.md §3.2` (or "absent")
 - **Observed:** what the code does / what the doc says.

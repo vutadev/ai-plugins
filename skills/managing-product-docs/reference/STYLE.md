@@ -1,6 +1,6 @@
 # Style Guide — Product Docs
 
-Shared conventions across all 12 docs. Apply to every file in `docs/`.
+Shared conventions across all included docs (up to 13). Apply to every file in `docs/`.
 
 ## Header Block (REQUIRED on every doc)
 
@@ -61,11 +61,14 @@ First release: `1.0.0` when status flips Draft → Final. Pre-release iterations
 | `NFR-{CAT}-{NNN}` | SRS | Non-functional req | `NFR-PERF-003` |
 | `UC-{CAT}-{NN}` | UseCases | Use case | `UC-BO-02` |
 | `UF-{NN}` | UserFlows | User flow | `UF-08` |
+| `API-{RESOURCE}-{NNN}` | API_REFERENCE | API endpoint | `API-AUTH-001`, `API-ORDER-003` |
 | `TC-{CAT}-{NNN}` | TESTCASES | Test case | `TC-AUTH-001` |
 | `M{N}` | ROADMAP | Milestone | `M0`, `M1` |
 | `db.{table}` | DATABASE | Table reference in prose | `db.bots` |
 
 Category codes (3–5 letters, ALL CAPS): `AUTH`, `RISK`, `BOT`, `BT` (backtest), `OPT` (optimization), `ACC` (access), `SEC`, `OPS`, `DATA`, `UI`, etc. Stay consistent — if PRD uses `AUTH`, every downstream doc uses `AUTH`.
+
+**API_REFERENCE resource codes:** Use domain resource name matching category codes where possible (e.g. `API-AUTH-001` for auth endpoints, `API-ORDER-001` for order endpoints). Resource code = the domain the endpoint group belongs to.
 
 **TECHSTACK category codes:** `LANG` (language), `FW` (framework), `RT` (runtime), `INFRA` (infrastructure/host), `OBS` (observability), `SEC` (security/secrets), `BUILD` (build/CI), `TEST` (test tooling), `DATA` (datastores), `MSG` (queues/streams), `CACHE`, `CDN`.
 
@@ -99,7 +102,7 @@ Always tag the language: ```` ```sql ````, ```` ```python ````, ```` ```yaml ```
 - Other doc: `[SRS §4.1](./SRS.md#41-functional-requirements)` (relative link + anchor).
 - Upstream ID: bare ID in backticks, e.g. `` `FR-AUTH-001` ``.
 
-## Footer (REQUIRED on docs 2–11)
+## Footer (REQUIRED on all included downstream docs)
 
 Every downstream doc ends with:
 
