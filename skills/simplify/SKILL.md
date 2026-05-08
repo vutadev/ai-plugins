@@ -9,8 +9,6 @@ description: Use when recently modified code should be refined for clarity, cons
 
 Refine code for clarity, consistency, and maintainability while preserving exact behavior. Prioritize readable, explicit code over clever compact code.
 
-Adapted from Anthropic's official Claude Code `code-simplifier` agent.
-
 ## When to Use
 
 Use this skill when:
@@ -30,7 +28,7 @@ Do not use this skill for:
 ## Core Principles
 
 1. **Preserve functionality.** Never change what the code does; only change how it is expressed. Keep public APIs, outputs, data shape, error behavior, side effects, and control flow semantics intact.
-2. **Apply project standards.** Follow conventions from `AGENTS.md`, `CLAUDE.md`, README files, language configs, linters, formatters, and nearby code.
+2. **Apply project standards.** Follow conventions from `AGENTS.md`, README files, language configs, linters, formatters, and nearby code.
 3. **Enhance clarity.** Reduce unnecessary complexity and nesting, remove duplication, improve names, consolidate related logic, and delete comments that only restate obvious code.
 4. **Keep balance.** Do not over-compress code, introduce clever one-liners, merge unrelated concerns, or remove abstractions that make the code easier to understand or extend.
 5. **Focus scope.** Prefer recently modified or explicitly requested files. Skip files where a safe, meaningful simplification is not available.
