@@ -22,7 +22,7 @@
 
 | US ID | Title | Persona | Priority | Estimate | Status | Related `F-*` | Related `FR-*` |
 |-------|-------|---------|----------|----------|--------|---------------|----------------|
-| `US-{CAT}-{NN}` | {{title}} | {{persona}} | {{Must|Should|Could|Won't}} | {{SP or size}} | {{Draft|Ready|In Sprint|Done}} | `F-N` | `FR-XXX-NNN` |
+| `US-{CAT}-{NN}` | {{title}} | {{persona}} | {{Must/Should/Could/Won't}} | {{SP or size}} | {{Draft/Ready/In Sprint/Done}} | `F-N` | `FR-XXX-NNN` |
 
 Group rows by category. Categories mirror PRD `F-*` and SRS (`AUTH`, `BOT`, `RISK`, etc.).
 

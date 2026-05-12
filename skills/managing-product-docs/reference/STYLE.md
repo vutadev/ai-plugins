@@ -1,6 +1,6 @@
 # Style Guide — Product Docs
 
-Shared conventions across all included docs (up to 14). Apply to every file in `docs/`.
+Shared conventions across all included docs (up to 15). Apply to every file in `docs/`.
 
 ## Header Block (REQUIRED on every doc)
 

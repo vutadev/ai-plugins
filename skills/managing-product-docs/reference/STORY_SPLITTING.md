@@ -81,7 +81,7 @@ Split by the surface or device the story targets.
 
 ## Quick Decision Aid
 
-```
+```text
 Story too big?
   ├─ Multiple CRUD verbs?      → split by CRUD (pattern 1)
   ├─ Multiple personas?         → split by persona (pattern 2)
