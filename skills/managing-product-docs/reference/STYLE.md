@@ -59,6 +59,8 @@ First release: `1.0.0` when status flips Draft → Final. Pre-release iterations
 | `BR-{CAT}-{NN}` | BusinessRules | Category + 2-digit num | `BR-RI-05` |
 | `FR-{CAT}-{NNN}` | SRS | Functional req | `FR-AUTH-001` |
 | `NFR-{CAT}-{NNN}` | SRS | Non-functional req | `NFR-PERF-003` |
+| `US-{CAT}-{NN}` | USER_STORIES | User story per feature category | `US-AUTH-01` |
+| `AC-{CAT}-{NN}-{N}` | USER_STORIES | Gherkin acceptance criterion under a story | `AC-AUTH-01-1` |
 | `UC-{CAT}-{NN}` | UseCases | Use case | `UC-BO-02` |
 | `UF-{NN}` | UserFlows | User flow | `UF-08` |
 | `API-{RESOURCE}-{NNN}` | API_REFERENCE | API endpoint | `API-AUTH-001`, `API-ORDER-003` |
@@ -131,6 +133,7 @@ PRD and ROADMAP use only Change Log (no traceability — they are the roots).
 
 - Imperative voice for requirements: "System SHALL ...", "Operator MUST ...".
 - Declarative for descriptions: "Backtest engine reads OHLC from cache.".
+- User-story prose uses end-user voice ("As a learner I want to bookmark a lesson, so that I can resume tomorrow"). AC uses scenario voice ("Given …, When …, Then …"). SRS imperative voice still applies to FR statements — the two registers coexist by living in different docs.
 - No marketing language, no qualifiers ("powerful", "robust", "world-class").
 - No future tense for current state ("will be" → "is").
 
@@ -141,3 +144,6 @@ PRD and ROADMAP use only Change Log (no traceability — they are the roots).
 - Dates as "next week", "Q2", "soon" — always ISO date or explicit week number.
 - Magic numbers without source — every threshold cites the SRS/BR ID that fixed it.
 - TODO/FIXME in docs — open items go to PRD §"Open Questions" only.
+- Vague AC adjectives ("fast", "beautiful", "intuitive", "user-friendly", "secure") without a measurable threshold — every AC uses numbers, named states, or named messages.
+- Generic "user" persona in `US-*` — always name a specific role from PRD §Personas.
+- "So that" clause that restates "I want to" — every story names a distinct outcome for user or business.

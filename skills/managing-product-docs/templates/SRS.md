@@ -50,6 +50,7 @@ Group by category. Each requirement:
 **Output:** {{...}}.
 **Acceptance:** {{testable criterion — measurable}}.
 **Related BR:** `BR-XXX-NN`.
+**Related US:** `US-XXX-NN` (only if `USER_STORIES.md` is included; story AC expand this Acceptance line into Gherkin scenarios).
 
 (Repeat per requirement, grouped under `## 3.X {{Category}}` headings.)
 
@@ -94,8 +95,8 @@ Cross-cutting acceptance criteria that span multiple FRs.
 
 ## Traceability
 
-| FR/NFR | Upstream PRD Feature | Related BR |
-|--------|---------------------|-----------|
+| FR/NFR | Upstream PRD Feature | Related BR | Related US |
+|--------|---------------------|-----------|-----------|
 
 ## Change Log
 

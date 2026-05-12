@@ -38,7 +38,7 @@ What already exists. Current capabilities, known limitations, deployment context
 **Goal:** one sentence.
 **Why:** business motivation.
 **Requirements summary:** bullet list. Each item gets full SRS treatment downstream.
-**Acceptance bar:** how we know it works.
+**Acceptance bar:** how we know it works. (Keep coarse. If `USER_STORIES.md` is included, each `F-*` gets sliced into per-story Gherkin AC there — do not duplicate scenario detail in PRD.)
 
 ### F2. {{Feature Group Name}}
 (repeat)
@@ -85,15 +85,16 @@ Project archetype: **{{archetype}}**
 | 3 | ARCHITECTURE | Included | MANDATORY |
 | 4 | BUSINESS_RULES | {{Included / Skipped}} | {{reason}} |
 | 5 | SRS | Included | MANDATORY |
-| 6 | USECASES | {{Included / Skipped}} | {{reason}} |
-| 7 | USERFLOWS | {{Included / Skipped}} | {{reason}} |
-| 8 | SITEMAP | {{Included / Skipped}} | {{reason}} |
-| 9 | DESIGN | {{Included / Skipped}} | {{reason}} |
-| 10 | DATABASE | {{Included / Skipped}} | {{reason}} |
-| 11 | API_REFERENCE | {{Included / Skipped}} | {{reason}} |
-| 12 | TESTCASES | Included | MANDATORY |
-| 13 | ROADMAP | Included | MANDATORY |
-| 14 | EXTERNAL_DOCS | {{Included / Skipped}} | {{reason}} |
+| 6 | USER_STORIES | {{Included / Skipped}} | {{reason}} |
+| 7 | USECASES | {{Included / Skipped}} | {{reason}} |
+| 8 | USERFLOWS | {{Included / Skipped}} | {{reason}} |
+| 9 | SITEMAP | {{Included / Skipped}} | {{reason}} |
+| 10 | DESIGN | {{Included / Skipped}} | {{reason}} |
+| 11 | DATABASE | {{Included / Skipped}} | {{reason}} |
+| 12 | API_REFERENCE | {{Included / Skipped}} | {{reason}} |
+| 13 | TESTCASES | Included | MANDATORY |
+| 14 | ROADMAP | Included | MANDATORY |
+| 15 | EXTERNAL_DOCS | {{Included / Skipped}} | {{reason}} |
 
 ## 11. Resolved Decisions
 

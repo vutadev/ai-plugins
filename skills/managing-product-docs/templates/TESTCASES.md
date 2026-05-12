@@ -57,6 +57,7 @@ Forbidden in tests: live external API calls, hard-coded current dates, sleep > 1
 **Type:** integration
 **Priority:** P0
 **Related:** `FR-AUTH-001`, `UC-AUTH-01`
+**Related AC:** `AC-AUTH-01-1` (only if `USER_STORIES.md` is included)
 **Component under test:** `C-01`
 **Preconditions:**
 - DB seeded with user `alice@example.com` / password hash for `Hunter2!`.
@@ -129,7 +130,14 @@ Failure injection scenarios (DB down, dependency timeout, disk full).
 |-------|--------------|------|
 | `UC-AUTH-01` | `TC-AUTH-001` | no |
 
-**Verification rule:** every `FR-*`, `NFR-*`, `UC-*` MUST appear in at least one row above with ≥1 covering `TC-*`. Print all "Gap = YES" rows and resolve before status = `Final`.
+### 8.4 AC coverage (only if `USER_STORIES.md` is included)
+
+| AC ID | Covering TCs | Gap? |
+|-------|--------------|------|
+| `AC-AUTH-01-1` | `TC-AUTH-001` | no |
+| `AC-AUTH-01-2` | — | **YES — author needed** |
+
+**Verification rule:** every `FR-*`, `NFR-*`, `UC-*` (and `AC-*` when `USER_STORIES.md` is included) MUST appear in at least one row above with ≥1 covering `TC-*`. Print all "Gap = YES" rows and resolve before status = `Final`.
 
 ## 9. Execution & Reporting
 
@@ -142,12 +150,14 @@ Failure injection scenarios (DB down, dependency timeout, disk full).
 
 ## Traceability
 
-### TC → FR / NFR / UC / BR
+### TC → FR / NFR / UC / BR / AC
 
-| TC ID | FR | NFR | UC | BR |
-|-------|----|-----|----|----|
-| `TC-AUTH-001` | `FR-AUTH-001` | — | `UC-AUTH-01` | — |
-| `TC-AUTH-002` | `FR-AUTH-002` | — | — | `BR-SEC-03` |
+| TC ID | FR | NFR | UC | BR | AC |
+|-------|----|-----|----|----|----|
+| `TC-AUTH-001` | `FR-AUTH-001` | — | `UC-AUTH-01` | — | `AC-AUTH-01-1` |
+| `TC-AUTH-002` | `FR-AUTH-002` | — | — | `BR-SEC-03` | — |
+
+(AC column populated only when `USER_STORIES.md` is included.)
 
 ### TC → Component
 

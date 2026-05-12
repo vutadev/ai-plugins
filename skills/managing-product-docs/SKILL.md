@@ -1,22 +1,24 @@
 ---
 name: managing-product-docs
-description: Use when user asks to create, extract, update, refine, or audit product documentation (PRD, tech stack, architecture, SRS, sitemap, design system, roadmap, use cases, user flows, business rules, database design, API reference, test cases, external docs) for a software project — covers greenfield init from a brief, brownfield extraction from existing code, incremental updates after scope/feature/tech/architecture/design changes, and gap audits to detect drift between docs and code.
+description: Use when user asks to create, extract, update, refine, or audit product documentation (PRD, tech stack, architecture, SRS, user stories with INVEST + Gherkin acceptance criteria, sitemap, design system, roadmap, use cases, user flows, business rules, database design, API reference, test cases, external docs) for a software project — covers greenfield init from a brief, brownfield extraction from existing code, incremental updates after scope/feature/tech/architecture/design changes, and gap audits to detect drift between docs and code.
 ---
 
 # Creating Product Docs
 
 ## Overview
 
-Produce a coherent doc set (up to 14 docs) for software project planning. Docs share stable IDs and cross-reference each other so implementation can begin without ambiguity. Each doc has a single, distinct purpose — no overlap.
+Produce a coherent doc set (up to 15 docs) for software project planning. Docs share stable IDs and cross-reference each other so implementation can begin without ambiguity. Each doc has a single, distinct purpose — no overlap.
 
-**Consistent, repeatable, archetype-driven.** Every project produced with this skill starts from the same templates, same headers, same ID conventions, same section structure. The **project archetype** determines which docs are mandatory vs optional — not every project needs all 14. Differences live in content and doc selection only. Use the templates and style guide bundled with this skill — do not freestyle.
+**Consistent, repeatable, archetype-driven.** Every project produced with this skill starts from the same templates, same headers, same ID conventions, same section structure. The **project archetype** determines which docs are mandatory vs optional — not every project needs all 15. Differences live in content and doc selection only. Use the templates and style guide bundled with this skill — do not freestyle.
 
 ## Required Companion Files
 
 This skill ships with reusable scaffolding. **Always read these before writing:**
 
 - `reference/STYLE.md` — header block format, ID prefix registry, table conventions, Mermaid theme, footer format. Single source of truth for formatting.
-- `templates/PRD.md`, `templates/TECHSTACK.md`, `templates/ARCHITECTURE.md`, `templates/BUSINESS_RULES.md`, `templates/SRS.md`, `templates/USECASES.md`, `templates/USERFLOWS.md`, `templates/SITEMAP.md`, `templates/DESIGN.md`, `templates/DATABASE.md`, `templates/API_REFERENCE.md`, `templates/TESTCASES.md`, `templates/ROADMAP.md`, `templates/EXTERNAL_DOCS.md` — skeleton for each doc with placeholder syntax `{{PLACEHOLDER}}`.
+- `reference/INVEST.md` — six-criteria reference for grading user stories before commit.
+- `reference/STORY_SPLITTING.md` — splitting triggers, six split patterns, anti-patterns. Use whenever a story fails INVEST `S`.
+- `templates/PRD.md`, `templates/TECHSTACK.md`, `templates/ARCHITECTURE.md`, `templates/BUSINESS_RULES.md`, `templates/SRS.md`, `templates/USER_STORIES.md`, `templates/USECASES.md`, `templates/USERFLOWS.md`, `templates/SITEMAP.md`, `templates/DESIGN.md`, `templates/DATABASE.md`, `templates/API_REFERENCE.md`, `templates/TESTCASES.md`, `templates/ROADMAP.md`, `templates/EXTERNAL_DOCS.md` — skeleton for each doc with placeholder syntax `{{PLACEHOLDER}}`.
 - `templates/REVIEW_REPORT.md` — gap-audit output template for **review** mode.
 
 Workflow: copy template → fill placeholders → keep section order intact → never delete required sections (Change Log, Traceability).
@@ -31,6 +33,7 @@ Workflow: copy template → fill placeholders → keep section order intact → 
 
 **Do NOT use:**
 - Single one-off doc (just write that one — don't force the full set)
+- Single one-off user story or AC (use `templates/USER_STORIES.md` directly without invoking the full skill — no need to spin up PRD/TECHSTACK/etc. for a single backlog item)
 - Architecture decision records (ADRs), RFCs, or design proposals (different format)
 - Auto-generated API docs (OpenAPI/Swagger output) — this skill covers hand-curated API contracts, not generated references
 
@@ -53,7 +56,7 @@ Pick ONE mode at the start of every invocation. Mode determines which phases run
 5. If `docs/PRD.md` exists and user says "review", "audit", "check", "are docs current" → review.
 6. When ambiguous, ask user which mode they want.
 
-## The 14-Doc Set
+## The 15-Doc Set
 
 | Order | File | Required | Purpose | Source |
 |-------|------|----------|---------|--------|
@@ -62,17 +65,20 @@ Pick ONE mode at the start of every invocation. Mode determines which phases run
 | 3 | `ARCHITECTURE.md` | **MANDATORY** | Components (`C-*`), deployment topology, integration points, ADR-lite decisions (`AD-*`) | PRD features + TECHSTACK |
 | 4 | `BUSINESS_RULES.md` | OPTIONAL | Why (policy that survives code rewrites) | PRD constraints |
 | 5 | `SRS.md` | **MANDATORY** | Testable requirements with `FR-*`/`NFR-*` IDs | PRD features + ARCHITECTURE |
-| 6 | `USECASES.md` | OPTIONAL | Actor-driven interactions (Cockburn-style) | SRS + actors |
-| 7 | `USERFLOWS.md` | OPTIONAL | End-to-end journeys (Mermaid) | UseCases stitched together |
-| 8 | `SITEMAP.md` | OPTIONAL | UI route/page hierarchy | PRD §5.2 UI pages |
-| 9 | `DESIGN.md` | OPTIONAL | Visual design system — tokens, colors, typography, layout, components (Google design.md format) | PRD §5.2 UI pages + brand brief |
-| 10 | `DATABASE.md` | OPTIONAL | Physical schema (DDL, ER diagram, indexes) | PRD §5.1 entities + SRS |
-| 11 | `API_REFERENCE.md` | OPTIONAL | Hand-curated API contracts — endpoints, auth, errors, versioning, examples (`API-*` IDs) | SRS + ARCHITECTURE |
-| 12 | `TESTCASES.md` | **MANDATORY** | Executable test cases (`TC-*`) traced to FR/NFR/UC | SRS + USECASES |
-| 13 | `ROADMAP.md` | **MANDATORY** | Milestones, dates, exit gates | All upstream docs |
-| 14 | `EXTERNAL_DOCS.md` | OPTIONAL | Registry of external APIs, specs, standards, resources we consume or follow (`EXT-*` IDs) — pointers only, never paste content | TECHSTACK + ARCHITECTURE + integration code |
+| 6 | `USER_STORIES.md` | OPTIONAL | Sprint-ready user stories (`US-*`) with INVEST self-check + Gherkin acceptance criteria (`AC-*`) | PRD features + SRS FRs |
+| 7 | `USECASES.md` | OPTIONAL | Actor-driven interactions (Cockburn-style) | SRS + actors |
+| 8 | `USERFLOWS.md` | OPTIONAL | End-to-end journeys (Mermaid) | UseCases stitched together |
+| 9 | `SITEMAP.md` | OPTIONAL | UI route/page hierarchy | PRD §5.2 UI pages |
+| 10 | `DESIGN.md` | OPTIONAL | Visual design system — tokens, colors, typography, layout, components (Google design.md format) | PRD §5.2 UI pages + brand brief |
+| 11 | `DATABASE.md` | OPTIONAL | Physical schema (DDL, ER diagram, indexes) | PRD §5.1 entities + SRS |
+| 12 | `API_REFERENCE.md` | OPTIONAL | Hand-curated API contracts — endpoints, auth, errors, versioning, examples (`API-*` IDs) | SRS + ARCHITECTURE |
+| 13 | `TESTCASES.md` | **MANDATORY** | Executable test cases (`TC-*`) traced to FR/NFR/UC/AC | SRS + USECASES + USER_STORIES |
+| 14 | `ROADMAP.md` | **MANDATORY** | Milestones, dates, exit gates | All upstream docs |
+| 15 | `EXTERNAL_DOCS.md` | OPTIONAL | Registry of external APIs, specs, standards, resources we consume or follow (`EXT-*` IDs) — pointers only, never paste content | TECHSTACK + ARCHITECTURE + integration code |
 
 All files go to `docs/` at project root.
+
+**USECASES vs USER_STORIES (when to pick which):** They are alternative views of behavior. Cockburn-style `UC-*` are formal actor-interaction specs favored by compliance and enterprise stakeholders. Agile `US-*` with Gherkin AC are sprint-ready backlog slices favored by Scrum / XP teams. Most projects pick one; both can coexist if stakeholders genuinely need both views (rare). Default per archetype is documented below; user can override.
 
 ## Project Archetypes
 
@@ -80,12 +86,12 @@ The archetype determines which OPTIONAL docs to include. **MANDATORY docs are al
 
 | Archetype | Always include (MANDATORY) | Include (OPTIONAL) | Typically skip |
 |-----------|---------------------------|-------------------|----------------|
-| **Web App** (UI + API + DB) | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, USERFLOWS, SITEMAP, DESIGN, DATABASE, API_REFERENCE, EXTERNAL_DOCS | — |
-| **Backend Service / API** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE, API_REFERENCE, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS |
-| **Library / SDK** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | API_REFERENCE, USECASES, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS, DATABASE |
-| **CLI Tool** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS, API_REFERENCE |
-| **Mobile App** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | USECASES, USERFLOWS, DESIGN, DATABASE, API_REFERENCE, EXTERNAL_DOCS | SITEMAP (use USERFLOWS instead) |
-| **Internal Tool / Admin** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | USECASES, SITEMAP, DATABASE, EXTERNAL_DOCS | DESIGN (or lite version), USERFLOWS, API_REFERENCE |
+| **Web App** (UI + API + DB) | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, **USER_STORIES** *(default ON for Scrum teams)*, USECASES, USERFLOWS, SITEMAP, DESIGN, DATABASE, API_REFERENCE, EXTERNAL_DOCS | — |
+| **Backend Service / API** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE, API_REFERENCE, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS, USER_STORIES *(no end-user surface)* |
+| **Library / SDK** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | API_REFERENCE, USECASES, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS, DATABASE, USER_STORIES *(consumer is a developer, not an end user)* |
+| **CLI Tool** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | BUSINESS_RULES, USECASES, DATABASE, EXTERNAL_DOCS | SITEMAP, DESIGN, USERFLOWS, API_REFERENCE, USER_STORIES *(usage stories optional — UC normally suffices)* |
+| **Mobile App** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | **USER_STORIES** *(default ON for Scrum teams)*, USECASES, USERFLOWS, DESIGN, DATABASE, API_REFERENCE, EXTERNAL_DOCS | SITEMAP (use USERFLOWS instead) |
+| **Internal Tool / Admin** | PRD, TECHSTACK, ARCH, SRS, TESTCASES, ROADMAP | **USER_STORIES** *(default ON for Scrum teams)*, USECASES, SITEMAP, DATABASE, EXTERNAL_DOCS | DESIGN (or lite version), USERFLOWS, API_REFERENCE |
 
 **Rules:**
 - User can override any archetype selection ("I want DESIGN even though it's a CLI tool" → include it).
@@ -105,7 +111,7 @@ The archetype determines which OPTIONAL docs to include. **MANDATORY docs are al
 ### G2. PRD First
 
 PRD is the only doc that captures decisions directly. Sections:
-- Overview, Personas, Features (`F1`, `F2`, ...), Solution Context (entities + UI pages only — no tech stack or deployment), NFRs, Milestones (high-level only — detail goes to ROADMAP), Risks, Open Questions, **Doc Set** (archetype + included/skipped status for all 14 docs), **Resolved Decisions**, Glossary.
+- Overview, Personas, Features (`F1`, `F2`, ...), Solution Context (entities + UI pages only — no tech stack or deployment), NFRs, Milestones (high-level only — detail goes to ROADMAP), Risks, Open Questions, **Doc Set** (archetype + included/skipped status for all 15 docs), **Resolved Decisions**, Glossary.
 - "Open Questions" section at end with suggested defaults — user resolves these before continuing.
 
 ### G3. Loop on Open Questions
@@ -120,15 +126,16 @@ For EACH doc selected by archetype: `cp templates/{NAME}.md docs/{NAME}.md` ment
 2. **ARCHITECTURE.md** — system decomposition. Components `C-{NN}` with responsibility, owned data, exposed interface, dependencies. Mermaid `flowchart LR` for component graph, `C4`-lite context/container/component levels. Deployment topology (process boundaries, network binds, container layout). Integration points (external services, queues, IPC). ADR-lite block: `AD-{NN}` with Decision / Context / Consequences / Status. Cross-ref each component to TS-* it consumes.
 3. **BUSINESS_RULES.md** — extract policy from PRD constraints. ID prefix per category (`BR-AC` access, `BR-RI` risk, `BR-AU` audit, etc). Each rule: Statement (SHALL/MUST NOT), Rationale, Enforcement Point, Violation Behavior, Related SRS/PRD IDs. End with conflict-resolution table and SRS→BR traceability matrix.
 4. **SRS.md** — IEEE-style. Stable IDs per category (`FR-AUTH-001`, `NFR-PERF-001`). Every requirement testable. Explicit "Out of Scope" list naming features NOT being built. Cross-ref each requirement to the component(s) `C-{NN}` that implement it.
-5. **USECASES.md** — actor list first, then UC index table, then Cockburn-style detail (Actor, Scope, Level, Preconditions, Trigger, Main Success Scenario numbered, Extensions, Postconditions, Related SRS) for the 10–15 most critical UCs. ID prefix per category (`UC-BO-02`).
-6. **USERFLOWS.md** — 10–15 flows tying multiple UCs together. Mermaid `flowchart TD` for branching, `sequenceDiagram` for actor-system interactions. Each flow: trigger, actors, numbered narrative, exits, cross-refs to UCs and routes.
-7. **SITEMAP.md** — full route tree, sidebar/topbar layout, persistent UI elements (e.g. always-visible kill switch), modal inventory, nav rules (auth redirect, 401 handling). Mark every route as `gated` or `public`.
-8. **DESIGN.md** — visual design system following the [Google design.md spec](https://github.com/google-labs-code/design.md). YAML frontmatter contains design tokens (colors, typography, spacing, rounded, components) merged with doc header fields (version, date, status, source, owner). Markdown body sections in order: Overview (brand personality), Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Token references use `{path.to.token}` syntax. Source: PRD §5.2 UI pages + user brand brief. Omit sections not relevant to the project but keep section order.
-9. **DATABASE.md** — Mermaid `erDiagram`, enums, full table definitions (columns, types, constraints, defaults), indexes (including partial indexes), partitioning strategy (RANGE by month for time-series), retention, role permissions (separate `migrate` / `app` / `audit` roles), backup commands, restore procedure, sample DDL excerpts for the most-referenced tables. Append-only audit tables enforced via `REVOKE UPDATE/DELETE`.
-10. **API_REFERENCE.md** — hand-curated API contract doc. Not auto-generated — captures design intent, not implementation artifact. Sections: API Overview (base URL, versioning scheme, auth method), Authentication & Authorization (token flow, scopes, key rotation), Endpoints by Resource (grouped by domain; each endpoint: method, path, description, request params/body, response schema, error codes, example request/response, related `FR-*`/`C-*`), Common Schemas (shared request/response objects), Error Codes (global error format, code registry), Rate Limits & Quotas, Pagination & Filtering conventions, Webhooks/Events (if applicable), Deprecation Policy. Cross-ref each endpoint to the `FR-*` it implements and the `C-*` that owns it. ID prefix `API-{RESOURCE}-{NNN}` (e.g. `API-AUTH-001`, `API-ORDER-003`).
-11. **TESTCASES.md** — executable test cases `TC-{CAT}-{NNN}` with Preconditions, Steps (numbered), Expected Result, Priority (P0/P1/P2), Type (unit/integration/e2e/manual), Test Data, Related FR/NFR/UC. Group by feature. Coverage matrix at end: every `FR-*` / `NFR-*` / `UC-*` mapped to ≥1 `TC-*`. Print orphan FR/NFR/UC.
-12. **ROADMAP.md** — milestones with hard exit gates, ASCII timeline, critical path, workstream allocation, risk-vs-schedule, release plan. Today's date and target date explicit.
-13. **EXTERNAL_DOCS.md** — registry of external APIs, specs, standards, and resources the project consumes or follows. **Pointers only — never paste external content** (it drifts). Each entry: ID (`EXT-{CAT}-{NNN}`), Provider, URL, Version/Revision, Last Verified date (YYYY-MM-DD), Type (API/SDK/STD/SVC/COMP/REF), Why We Depend, Cross-refs to `TS-*`/`C-*`/`FR-*`/`API-*`, Auth/Access level, Notes/Gotchas. Group by category. Link Health Summary flags stale entries (>6 months). Deprecation table tracks sunset resources. When EXTERNAL_DOCS is included, TECHSTACK cross-refs `EXT-*` for documentation URLs instead of inlining them.
+5. **USER_STORIES.md** — agile sprint backlog. For each PRD `F-*`: elicit specific persona(s), slice into stories ≤5 dev-days each, assign ID `US-{CAT}-{NN}` matching the feature category. For each story: fill all six **INVEST** cells (use `reference/INVEST.md`); attach Metadata (Epic / Priority MoSCoW / Estimate / Dependencies / Assumptions); write ≥3 Gherkin AC blocks `AC-{CAT}-{NN}-{N}` covering ≥1 happy + ≥1 edge + ≥1 negative path. Trace each `US-*` to its source `F-*` and to ≥1 `FR-*`. Trace each `AC-*` to ≥1 `TC-*` (forward — TESTCASES is written after). Run §4 Pre-commit Checklist for every story before flipping Status to `Ready`. Split stories per `reference/STORY_SPLITTING.md` whenever INVEST `S` fails (estimate >5 days, AC ≥7, "AND" in title, multi-persona). *(Skip when archetype excludes USER_STORIES.)*
+6. **USECASES.md** — actor list first, then UC index table, then Cockburn-style detail (Actor, Scope, Level, Preconditions, Trigger, Main Success Scenario numbered, Extensions, Postconditions, Related SRS) for the 10–15 most critical UCs. ID prefix per category (`UC-BO-02`).
+7. **USERFLOWS.md** — 10–15 flows tying multiple UCs together. Mermaid `flowchart TD` for branching, `sequenceDiagram` for actor-system interactions. Each flow: trigger, actors, numbered narrative, exits, cross-refs to UCs and routes.
+8. **SITEMAP.md** — full route tree, sidebar/topbar layout, persistent UI elements (e.g. always-visible kill switch), modal inventory, nav rules (auth redirect, 401 handling). Mark every route as `gated` or `public`.
+9. **DESIGN.md** — visual design system following the [Google design.md spec](https://github.com/google-labs-code/design.md). YAML frontmatter contains design tokens (colors, typography, spacing, rounded, components) merged with doc header fields (version, date, status, source, owner). Markdown body sections in order: Overview (brand personality), Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Token references use `{path.to.token}` syntax. Source: PRD §5.2 UI pages + user brand brief. Omit sections not relevant to the project but keep section order.
+10. **DATABASE.md** — Mermaid `erDiagram`, enums, full table definitions (columns, types, constraints, defaults), indexes (including partial indexes), partitioning strategy (RANGE by month for time-series), retention, role permissions (separate `migrate` / `app` / `audit` roles), backup commands, restore procedure, sample DDL excerpts for the most-referenced tables. Append-only audit tables enforced via `REVOKE UPDATE/DELETE`.
+11. **API_REFERENCE.md** — hand-curated API contract doc. Not auto-generated — captures design intent, not implementation artifact. Sections: API Overview (base URL, versioning scheme, auth method), Authentication & Authorization (token flow, scopes, key rotation), Endpoints by Resource (grouped by domain; each endpoint: method, path, description, request params/body, response schema, error codes, example request/response, related `FR-*`/`C-*`), Common Schemas (shared request/response objects), Error Codes (global error format, code registry), Rate Limits & Quotas, Pagination & Filtering conventions, Webhooks/Events (if applicable), Deprecation Policy. Cross-ref each endpoint to the `FR-*` it implements and the `C-*` that owns it. ID prefix `API-{RESOURCE}-{NNN}` (e.g. `API-AUTH-001`, `API-ORDER-003`).
+12. **TESTCASES.md** — executable test cases `TC-{CAT}-{NNN}` with Preconditions, Steps (numbered), Expected Result, Priority (P0/P1/P2), Type (unit/integration/e2e/manual), Test Data, Related FR/NFR/UC (and `AC-*` when USER_STORIES included). Group by feature. Coverage matrix at end: every `FR-*` / `NFR-*` / `UC-*` (and `AC-*` when present) mapped to ≥1 `TC-*`. Print orphan FR/NFR/UC/AC.
+13. **ROADMAP.md** — milestones with hard exit gates, ASCII timeline, critical path, workstream allocation, risk-vs-schedule, release plan. Today's date and target date explicit.
+14. **EXTERNAL_DOCS.md** — registry of external APIs, specs, standards, and resources the project consumes or follows. **Pointers only — never paste external content** (it drifts). Each entry: ID (`EXT-{CAT}-{NNN}`), Provider, URL, Version/Revision, Last Verified date (YYYY-MM-DD), Type (API/SDK/STD/SVC/COMP/REF), Why We Depend, Cross-refs to `TS-*`/`C-*`/`FR-*`/`API-*`, Auth/Access level, Notes/Gotchas. Group by category. Link Health Summary flags stale entries (>6 months). Deprecation table tracks sunset resources. When EXTERNAL_DOCS is included, TECHSTACK cross-refs `EXT-*` for documentation URLs instead of inlining them.
 
 ## Workflow — brownfield-extract
 
@@ -177,6 +184,7 @@ Run G2–G4 with discovered scope. Cite source verbatim:
 - Each ARCHITECTURE `AD-{NN}` cites the commit/PR that introduced the decision; if unknown, mark Status: `Inferred`.
 - Each SRS requirement traces to a code entry point.
 - Each DATABASE table copies the existing schema verbatim (do not redesign).
+- Each USER_STORIES `US-*` derives from observed feature entry points (UI flows, CLI commands, API resources) and existing test names — backfill INVEST best-effort, mark cells `⚠️` where intent is uncertain. Each `AC-*` derives from an existing test scenario or product behavior; cite the test file or behavior source: `Source: tests/checkout/test_promo.py::test_flat_amount`. Flag stories whose original PO intent cannot be inferred as Open Questions on the PRD before flipping to `Final`.
 - Each TESTCASES `TC-*` derives from an existing test file: `Source: tests/auth_test.py::test_login_expiry`.
 - Each DESIGN.md token cites the existing theme file: `Source: tailwind.config.ts:12` or `Source: src/styles/variables.css:5`. If no theme file exists, source from user brand brief.
 - Each API_REFERENCE `API-*` cites the route handler: `Source: src/routes/auth.ts:45` or `Source: api/v1/orders.py::OrderView`. If OpenAPI spec exists, cross-reference but don't copy — hand-curate intent and policy.
@@ -200,7 +208,10 @@ Docs exist; something changed. Identify what, propagate carefully, bump versions
 | Replace tech (e.g. Postgres → MySQL, Express → Fastify) | Major | TECHSTACK; cascade ARCHITECTURE, then DATABASE/SRS as needed |
 | New component or split/merge components | Minor | ARCHITECTURE; cascade SRS if interface changes |
 | New ADR or reverse existing ADR | Minor or Major | ARCHITECTURE; cascade per affected components |
-| New requirement detail without scope change | Minor | SRS; cascade UC/UF if user-facing, TESTCASES always |
+| New requirement detail without scope change | Minor | SRS; cascade UC/UF if user-facing, USER_STORIES if backlog impacted, TESTCASES always |
+| New / refined user story | Minor | USER_STORIES; cascade TESTCASES always (every new `AC-*` needs ≥1 `TC-*`) |
+| AC scenario added to existing US | Patch or Minor | USER_STORIES; cascade TESTCASES always |
+| User story split (one US becomes several) | Minor | USER_STORIES; cascade TESTCASES (re-key `TC-*` Related AC); update PRD §Doc Set if status changes |
 | New table/column | Minor | DATABASE; cascade SRS if observable, TESTCASES if behavior changes |
 | New/changed API endpoint | Minor | API_REFERENCE; cascade TC if behavior changes |
 | API versioning or auth scheme change | Major | API_REFERENCE; cascade SRS if contract-breaking |
@@ -217,11 +228,12 @@ Docs exist; something changed. Identify what, propagate carefully, bump versions
 Before editing, list every doc affected. Use the source-of-truth hierarchy:
 
 ```
-PRD changes        → TECHSTACK? ARCH? BR? SRS? UC? UF? SITEMAP? DESIGN? DB? API? TC? ROADMAP?
+PRD changes        → TECHSTACK? ARCH? BR? SRS? US? UC? UF? SITEMAP? DESIGN? DB? API? TC? ROADMAP?
 TECHSTACK changes  → ARCH? SRS? (only if behavior changes) DB? (engine swap)
 ARCH changes       → SRS? DB? API? SITEMAP? (only if surface changes)
-BR changes         → SRS? UC? TC?
-SRS changes        → UC? UF? DB? API? TC (always — every FR/NFR needs ≥1 TC)
+BR changes         → SRS? US? UC? TC?
+SRS changes        → US? UC? UF? DB? API? TC (always — every FR/NFR needs ≥1 TC)
+US changes         → TC (always — every AC needs ≥1 TC)
 UC changes         → UF? SITEMAP? TC?
 SITEMAP changes    → DESIGN? (if component names referenced in design tokens)
 DESIGN changes     → none upstream (DESIGN is leaf — visual only)
@@ -297,6 +309,8 @@ Do NOT auto-apply fixes. User reviews report and either:
 | `AD-*` | ARCHITECTURE | `AD-03` (architectural decision) |
 | `BR-*` | BusinessRules | `BR-RI-05` |
 | `FR-*`, `NFR-*` | SRS | `FR-AUTH-001`, `NFR-PERF-003` |
+| `US-*` | USER_STORIES | `US-AUTH-01` |
+| `AC-*` | USER_STORIES | `AC-AUTH-01-1` |
 | `UC-*` | UseCases | `UC-BO-02` |
 | `UF-*` | UserFlows | `UF-08` |
 | `API-*` | API_REFERENCE | `API-AUTH-001`, `API-ORDER-003` |
@@ -315,15 +329,16 @@ ROADMAP §10 must list all included docs in this order (mark skipped docs as "N/
 3. ARCHITECTURE — how the parts fit (components + ADRs) — **MANDATORY**
 4. BusinessRules — why (policy that survives code) — OPTIONAL
 5. SRS — testable requirements — **MANDATORY**
-6. UseCases — actor interactions — OPTIONAL
-7. UserFlows — end-to-end journeys — OPTIONAL
-8. SITEMAP — UI surface — OPTIONAL
-9. DESIGN — visual design system (tokens + components) — OPTIONAL
-10. Database — physical schema — OPTIONAL
-11. API_REFERENCE — API contracts (endpoints, auth, errors) — OPTIONAL
-12. TESTCASES — verification — **MANDATORY**
-13. ROADMAP — when — **MANDATORY**
-14. EXTERNAL_DOCS — external APIs, specs, resources we consume — OPTIONAL
+6. USER_STORIES — agile backlog (`US-*` + Gherkin `AC-*`) — OPTIONAL
+7. UseCases — actor interactions (Cockburn-style) — OPTIONAL
+8. UserFlows — end-to-end journeys — OPTIONAL
+9. SITEMAP — UI surface — OPTIONAL
+10. DESIGN — visual design system (tokens + components) — OPTIONAL
+11. Database — physical schema — OPTIONAL
+12. API_REFERENCE — API contracts (endpoints, auth, errors) — OPTIONAL
+13. TESTCASES — verification — **MANDATORY**
+14. ROADMAP — when — **MANDATORY**
+15. EXTERNAL_DOCS — external APIs, specs, resources we consume — OPTIONAL
 
 ## Verification (Run After Writing All Included Docs)
 
@@ -331,14 +346,14 @@ Checks apply only to docs included by archetype. Skip checks for omitted docs.
 
 1. **Header parity** — every included doc opens with the `reference/STYLE.md` header block (Version, Date, Status, Source, Owner). DESIGN.md merges these into YAML frontmatter. No exceptions.
 2. **ID coverage** — every `FR-*` in SRS is covered by ≥1 `UC-*` (functional) or `BR-*` (policy). Print missing. *(Skip if USECASES/BUSINESS_RULES omitted — trace to TC instead.)*
-3. **Test coverage** — every `FR-*`, `NFR-*`, `UC-*` is covered by ≥1 `TC-*` in TESTCASES. Print orphan FR/NFR/UC.
+3. **Test coverage** — every `FR-*`, `NFR-*`, `UC-*` is covered by ≥1 `TC-*` in TESTCASES. When USER_STORIES is included, every `AC-*` is also covered by ≥1 `TC-*`. Print orphan FR/NFR/UC/AC.
 4. **Route coverage** — every gated SITEMAP route is reachable from ≥1 `UF-*`. *(Skip if SITEMAP omitted.)*
 5. **Schema coverage** — every entity in PRD §5.1 has full DDL in DATABASE.md, and every table in DATABASE.md traces to a PRD/SRS feature. *(Skip if DATABASE omitted.)*
 6. **Stack coverage** — every `TS-*` entry in TECHSTACK has pinned version and lock file match. TECHSTACK is self-sourced (user brief + manifests), not from PRD.
 7. **Component coverage** — every `C-*` in ARCHITECTURE is implemented by ≥1 `FR-*` (or marked `Status: Infrastructure`); every `FR-*` cites the `C-*` that implements it.
 8. **ADR coverage** — every `AD-*` cites Status (`Proposed`/`Accepted`/`Superseded`/`Inferred`) and consequences. Superseded ADRs link to replacement.
 9. **Mermaid validity** — paste each diagram into mermaid.live to confirm parse.
-10. **Hierarchy** — ROADMAP §10 lists all 14 docs in canonical order (skipped docs marked "N/A").
+10. **Hierarchy** — ROADMAP §10 lists all 15 docs in canonical order (skipped docs marked "N/A").
 11. **Footer parity** — included downstream docs end with Traceability + Change Log; PRD/ROADMAP end with Change Log only.
 12. **No invented prefixes** — grep for ID prefixes; every prefix appears in `reference/STYLE.md` registry.
 13. **Design token validity** — DESIGN.md YAML frontmatter parses without error; no duplicate `##` section headings; token references (`{path.to.token}`) resolve to defined values; required sections present in spec order. *(Skip if DESIGN omitted.)*
@@ -346,7 +361,12 @@ Checks apply only to docs included by archetype. Skip checks for omitted docs.
 15. **EXT coverage** — every `EXT-*` in EXTERNAL_DOCS is cited by ≥1 upstream doc (`TS-*`, `C-*`, `FR-*`, or `API-*`). Print orphan `EXT-*` entries. *(Skip if EXTERNAL_DOCS omitted.)*
 16. **External-dep coverage** — every TECHSTACK entry consuming a third-party service/API has a matching `EXT-*` entry. *(Skip if EXTERNAL_DOCS omitted.)*
 17. **Link freshness** — flag `EXT-*` entries with `Last Verified` older than 6 months. *(Skip if EXTERNAL_DOCS omitted.)*
-18. **Doc set audit** — PRD §"Doc Set" lists all 14 docs with status (Included / Skipped + reason). No doc is silently absent.
+18. **US INVEST coverage** — every `US-*` in USER_STORIES has all six INVEST cells filled (no blanks, no `❌`). Print stories that fail. *(Skip if USER_STORIES omitted.)*
+19. **US AC coverage** — every `US-*` has ≥3 `AC-*` (≥1 happy + ≥1 edge + ≥1 negative). Print stories that fail. *(Skip if USER_STORIES omitted.)*
+20. **AC → TC trace** — every `AC-*` traces to ≥1 `TC-*` in TESTCASES. Print orphan AC. *(Skip if USER_STORIES omitted.)*
+21. **US → F trace** — every `US-*` cites a PRD `F-*`; print orphan stories. Every PRD `F-*` cites ≥1 `US-*` (or is explicitly marked "no story carved — covered by SRS only"); print orphan features. *(Skip if USER_STORIES omitted.)*
+22. **Story sizing** — flag stories with estimate >5 dev-days OR `AC-*` count >7. Refer to `reference/STORY_SPLITTING.md` and split. *(Skip if USER_STORIES omitted.)*
+23. **Doc set audit** — PRD §"Doc Set" lists all 15 docs with status (Included / Skipped + reason). No doc is silently absent.
 
 ## Common Mistakes
 
@@ -372,12 +392,22 @@ Checks apply only to docs included by archetype. Skip checks for omitted docs.
 | `TC-*` with no `Related FR` | Orphan test — either trace to a requirement or delete |
 | Dumping OpenAPI/Swagger output into API_REFERENCE | API_REFERENCE is hand-curated contracts, not generated spec — captures design intent, examples, and policy |
 | Writing API_REFERENCE for project with no public/internal API | Skip it — archetype decides; CLI tools and pure-UI apps rarely need it |
-| Producing all 14 docs for a simple library | Use archetype selection — libraries skip SITEMAP, DESIGN, USERFLOWS, DATABASE |
+| Producing all 15 docs for a simple library | Use archetype selection — libraries skip SITEMAP, DESIGN, USERFLOWS, DATABASE, USER_STORIES |
 | Silently skipping an optional doc without recording it | Always record skipped docs in PRD §"Doc Set" with reason |
 | Pasting external API docs into EXTERNAL_DOCS | EXTERNAL_DOCS is pointers only — URL + version + last-verified date. Pasted content drifts instantly |
 | Missing `Last Verified` date on `EXT-*` entries | Every entry needs a verification date — without it, link rot is undetectable |
 | Conflating TECHSTACK and EXTERNAL_DOCS | TECHSTACK = what we install (SDK v3.2.1). EXTERNAL_DOCS = where to read about it (Stripe API Reference v2024-01-01) |
 | Inlining doc URLs in TECHSTACK when EXTERNAL_DOCS is included | When EXTERNAL_DOCS exists, TECHSTACK cross-refs `EXT-*` for doc URLs — single source of truth for external links |
+| Generic "user" persona in `US-*` | Replace with a specific role from PRD §Personas — INVEST `V` fails without a named persona |
+| "So that" clause restates "I want to" | Rewrite the value to a distinct user / business outcome — "Five Whys" until a real benefit surfaces |
+| Vague AC adjectives ("fast", "intuitive", "user-friendly") | Replace with measurable threshold (latency in ms, named state, exact message) |
+| UI pixel detail in AC ("button at top right, 16 px padding") | Move to DESIGN.md; AC names behavior, not chrome |
+| Implementation detail in AC (API names, DB tables, function names) | Move to ARCHITECTURE/SRS; AC stays user-observable |
+| Single AC for the whole story | Split into ≥3 (happy + edge + negative) — INVEST `T` fails otherwise |
+| ≥7 AC in one story without splitting | Apply `reference/STORY_SPLITTING.md` patterns; one big story becomes several small ones |
+| Both USECASES and USER_STORIES with overlapping detail | Pick one as the source of truth for behavior; the other (if kept) cross-refs and stays terse |
+| `TC-*` claims `Related AC` but the AC doesn't exist | Either author the AC first or remove the trace; orphan refs poison verification |
+| Skipping INVEST self-check ("we'll do it later") | INVEST blocks story commit — the table is the gate, not optional documentation |
 
 ## Output Conventions
 
@@ -401,5 +431,12 @@ Checks apply only to docs included by archetype. Skip checks for omitted docs.
 - Generated doc is mostly restating PRD verbatim → trim; downstream docs add structure, not repetition
 - Writing `AD-*` for a decision already in code with no context → mark Status: `Inferred`, ask user for original rationale
 - About to write API_REFERENCE but project has no API endpoints → skip, record in PRD §"Doc Set"
-- About to produce all 14 docs without checking archetype → stop, determine archetype first, skip irrelevant docs
+- About to produce all 15 docs without checking archetype → stop, determine archetype first, skip irrelevant docs
 - ARCHITECTURE cites third-party integration but no `EXT-*` exists (when EXTERNAL_DOCS included) → stop, add the `EXT-*` entry first
+- About to write USER_STORIES with PRD `F-*` empty or unresolved Open Questions → stop, finish PRD first; stories without features are unmoored
+- About to write USER_STORIES with SRS empty → stop, write SRS first; stories cite `FR-*` for traceability
+- About to write `AC-*` with no `FR-*` to point at → stop, link the AC to its source FR or remove it (orphan AC fails verification check #20)
+- About to flip a story to `Ready` with INVEST cells blank → stop, fill all six cells using `reference/INVEST.md`
+- Story estimate >5 days OR `AC-*` count >7 → stop, split via `reference/STORY_SPLITTING.md` before committing
+- About to write `TC-*` with `Related AC` pointing at a non-existent `AC-*` → stop, author the AC in USER_STORIES first
+- About to add a story not covered by any PRD `F-*` → stop, the feature is missing — promote it to PRD §Features first

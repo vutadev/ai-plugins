@@ -82,12 +82,15 @@ When docs disagree, this order wins:
 1. **PRD** — what we build.
 2. **BusinessRules** — why (policy that survives code).
 3. **SRS** — testable requirements.
-4. **UseCases** — actor interactions.
-5. **UserFlows** — end-to-end journeys.
-6. **SITEMAP** — UI surface.
-7. **Database** — physical schema.
-8. **ROADMAP** — when.
-9. **EXTERNAL_DOCS** — external APIs, specs, resources we consume (leaf — reference catalog).
+4. **USER_STORIES** — agile backlog (`US-*` + Gherkin `AC-*`).
+5. **UseCases** — actor interactions.
+6. **UserFlows** — end-to-end journeys.
+7. **SITEMAP** — UI surface.
+8. **Database** — physical schema.
+9. **ROADMAP** — when.
+10. **EXTERNAL_DOCS** — external APIs, specs, resources we consume (leaf — reference catalog).
+
+(Mirror the full source-of-truth hierarchy from `SKILL.md §Source-of-Truth Hierarchy`. Mark skipped docs as "N/A — not applicable for this archetype".)
 
 Lower-numbered doc wins ties. Update upstream first; do not amend downstream to paper over PRD drift.
 
