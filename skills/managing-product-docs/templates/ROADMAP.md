@@ -79,16 +79,21 @@ Mirror PRD §1.4. Roadmap-specific terms only.
 
 When docs disagree, this order wins:
 
-1. **PRD** — what we build.
-2. **BusinessRules** — why (policy that survives code).
-3. **SRS** — testable requirements.
-4. **USER_STORIES** — agile backlog (`US-*` + Gherkin `AC-*`).
-5. **UseCases** — actor interactions.
-6. **UserFlows** — end-to-end journeys.
-7. **SITEMAP** — UI surface.
-8. **Database** — physical schema.
-9. **ROADMAP** — when.
-10. **EXTERNAL_DOCS** — external APIs, specs, resources we consume (leaf — reference catalog).
+1. PRD — what we build (business focus) — **MANDATORY**
+2. TECHSTACK — what we build it with — **MANDATORY**
+3. ARCHITECTURE — how the parts fit (components + ADRs) — **MANDATORY**
+4. BusinessRules — why (policy that survives code) — OPTIONAL
+5. SRS — testable requirements — **MANDATORY**
+6. USER_STORIES — agile backlog (`US-*` + Gherkin `AC-*`) — OPTIONAL
+7. UseCases — actor interactions (Cockburn-style) — OPTIONAL
+8. UserFlows — end-to-end journeys — OPTIONAL
+9. SITEMAP — UI surface — OPTIONAL
+10. DESIGN — visual design system (tokens + components) — OPTIONAL
+11. Database — physical schema — OPTIONAL
+12. API_REFERENCE — API contracts (endpoints, auth, errors) — OPTIONAL
+13. TESTCASES — verification — **MANDATORY**
+14. ROADMAP — when — **MANDATORY**
+15. EXTERNAL_DOCS — external APIs, specs, resources we consume — OPTIONAL
 
 (Mirror the full source-of-truth hierarchy from `SKILL.md §Source-of-Truth Hierarchy`. Mark skipped docs as "N/A — not applicable for this archetype".)
 

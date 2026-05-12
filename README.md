@@ -91,7 +91,7 @@ npx skills remove -a '*' -s '*' -y
 
 ## Skill: managing-product-docs
 
-Produces a coherent doc set (up to 14 docs) for software project planning. Every doc shares stable IDs and cross-references so implementation can begin without ambiguity.
+Produces a coherent doc set (up to 15 docs) for software project planning. Every doc shares stable IDs and cross-references so implementation can begin without ambiguity.
 
 ### Supported Docs
 
@@ -102,15 +102,16 @@ Produces a coherent doc set (up to 14 docs) for software project planning. Every
 | 3 | ARCHITECTURE | Mandatory | Components, deployment, integration points |
 | 4 | BUSINESS_RULES | Optional | Policy that survives code rewrites |
 | 5 | SRS | Mandatory | Testable requirements (FR/NFR) |
-| 6 | USECASES | Optional | Actor-driven interactions |
-| 7 | USERFLOWS | Optional | End-to-end journeys (Mermaid diagrams) |
-| 8 | SITEMAP | Optional | UI route/page hierarchy |
-| 9 | DESIGN | Optional | Visual design system (tokens, colors, typography) |
-| 10 | DATABASE | Optional | Physical schema, ER diagrams, DDL |
-| 11 | API_REFERENCE | Optional | Hand-curated API contracts |
-| 12 | TESTCASES | Mandatory | Executable test cases traced to requirements |
-| 13 | ROADMAP | Mandatory | Milestones, dates, exit gates |
-| 14 | EXTERNAL_DOCS | Optional | Registry of external APIs/specs/resources |
+| 6 | USER_STORIES | Optional | Sprint-ready stories with INVEST self-check + Gherkin AC |
+| 7 | USECASES | Optional | Actor-driven interactions |
+| 8 | USERFLOWS | Optional | End-to-end journeys (Mermaid diagrams) |
+| 9 | SITEMAP | Optional | UI route/page hierarchy |
+| 10 | DESIGN | Optional | Visual design system (tokens, colors, typography) |
+| 11 | DATABASE | Optional | Physical schema, ER diagrams, DDL |
+| 12 | API_REFERENCE | Optional | Hand-curated API contracts |
+| 13 | TESTCASES | Mandatory | Executable test cases traced to requirements |
+| 14 | ROADMAP | Mandatory | Milestones, dates, exit gates |
+| 15 | EXTERNAL_DOCS | Optional | Registry of external APIs/specs/resources |
 
 ### Operation Modes
 
@@ -123,12 +124,12 @@ Produces a coherent doc set (up to 14 docs) for software project planning. Every
 
 The skill auto-selects which optional docs to include based on project type:
 
-- **Web App** — includes all docs
-- **Backend Service / API** — skips SITEMAP, DESIGN, USERFLOWS
-- **Library / SDK** — skips SITEMAP, DESIGN, USERFLOWS, DATABASE
-- **CLI Tool** — skips SITEMAP, DESIGN, USERFLOWS, API_REFERENCE
-- **Mobile App** — skips SITEMAP (uses USERFLOWS instead)
-- **Internal Tool / Admin** — skips DESIGN, USERFLOWS, API_REFERENCE
+- **Web App** — includes all optional docs, with USER_STORIES default ON for Scrum teams
+- **Backend Service / API** — skips SITEMAP, DESIGN, USERFLOWS, USER_STORIES
+- **Library / SDK** — skips SITEMAP, DESIGN, USERFLOWS, DATABASE, USER_STORIES
+- **CLI Tool** — skips SITEMAP, DESIGN, USERFLOWS, API_REFERENCE, USER_STORIES
+- **Mobile App** — includes USER_STORIES by default; skips SITEMAP
+- **Internal Tool / Admin** — includes USER_STORIES by default; skips DESIGN, USERFLOWS, API_REFERENCE
 
 ## Contributing
 
