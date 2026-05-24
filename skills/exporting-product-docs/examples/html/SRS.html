@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SRS · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html" class="active">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Requirements</span><span>/</span><span class="current">SRS</span></nav>
+<article class="doc">
+<h1 id="software-requirements-specification--roomly">Software Requirements Specification — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> PRD v1.0.0, BUSINESS_RULES v1.0.0
+<strong>Owner:</strong> Tech Lead</p>
+<hr>
+<p>Testable behavior for Roomly. Every requirement traces to a PRD feature and is covered by <a href="./TESTCASES.html">TESTCASES</a>.</p>
+<h2 id="1-at-a-glance">1. At a glance</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Requirement</th>
+<th>Feature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FR-AUTH-001</code></td>
+<td>Corporate-email sign-in</td>
+<td><code>F4</code></td>
+</tr>
+<tr>
+<td><code>FR-ROOM-001</code></td>
+<td>Search rooms free in a window</td>
+<td><code>F1</code></td>
+</tr>
+<tr>
+<td><code>FR-BOOK-001</code></td>
+<td>Create a confirmed booking</td>
+<td><code>F2</code></td>
+</tr>
+<tr>
+<td><code>FR-BOOK-002</code></td>
+<td>Cancel a booking</td>
+<td><code>F3</code></td>
+</tr>
+<tr>
+<td><code>FR-ADMIN-001</code></td>
+<td>Manage rooms</td>
+<td><code>F5</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-authentication">2. Authentication</h2>
+<h3 id="21-sign-in">2.1 Sign-in</h3>
+<ul>
+<li><code>FR-AUTH-001</code> The system SHALL authenticate users via the corporate IdP and SHALL reject any email outside <code>@roomly.example</code> (<code>BR-AUTH-01</code>).</li>
+</ul>
+<h2 id="3-booking">3. Booking</h2>
+<h3 id="31-search">3.1 Search</h3>
+<ul>
+<li><code>FR-ROOM-001</code> The system SHALL return rooms with no confirmed booking overlapping the requested <code>[start, end)</code> window.</li>
+</ul>
+<h3 id="32-create">3.2 Create</h3>
+<ul>
+<li><code>FR-BOOK-001</code> The system SHALL create a confirmed booking only when the slot is free (<code>BR-BOOK-01</code>) and duration ≤ 4h (<code>BR-BOOK-02</code>). On overlap it SHALL return <code>409 Conflict</code>.</li>
+</ul>
+<h3 id="33-cancel">3.3 Cancel</h3>
+<ul>
+<li><code>FR-BOOK-002</code> The system SHALL allow cancellation only 15+ minutes before start (<code>BR-BOOK-03</code>).</li>
+</ul>
+<h2 id="4-administration">4. Administration</h2>
+<ul>
+<li><code>FR-ADMIN-001</code> The system SHALL let Office Managers create, edit, and retire rooms (<code>BR-ADMIN-01</code>).</li>
+</ul>
+<h2 id="5-non-functional">5. Non-Functional</h2>
+<ul>
+<li><code>NFR-PERF-001</code> Search SHALL return within 300 ms p95 for ≤ 500 rooms.</li>
+<li><code>NFR-SEC-001</code> All booking mutations SHALL require an authenticated session.</li>
+</ul>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FR-AUTH-001</code></td>
+<td><code>F4</code>, <code>BR-AUTH-01</code></td>
+</tr>
+<tr>
+<td><code>FR-ROOM-001</code></td>
+<td><code>F1</code></td>
+</tr>
+<tr>
+<td><code>FR-BOOK-001</code></td>
+<td><code>F2</code>, <code>BR-BOOK-01</code>, <code>BR-BOOK-02</code></td>
+</tr>
+<tr>
+<td><code>FR-BOOK-002</code></td>
+<td><code>F3</code>, <code>BR-BOOK-03</code></td>
+</tr>
+<tr>
+<td><code>FR-ADMIN-001</code></td>
+<td><code>F5</code>, <code>BR-ADMIN-01</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Tech Lead</td>
+<td>Initial FR/NFR set.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="BUSINESS_RULES.html"><span>Previous</span><strong>Business Rules</strong></a><a class="pager-next" href="USER_STORIES.html"><span>Next</span><strong>User Stories</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

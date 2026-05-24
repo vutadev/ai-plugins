@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html" class="active">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Design</span><span>/</span><span class="current">Design System</span></nav>
+<article class="doc">
+<div class="design-tokens"><h2 id="design-tokens">Design Tokens</h2><table><thead><tr><th>Token</th><th>Value</th></tr></thead><tbody>
+<tr><td><code>version</code></td><td>1.0.0</td></tr>
+<tr><td><code>status</code></td><td>Final</td></tr>
+<tr><td><code>source</code></td><td>PRD v1.0.0, SITEMAP v1.0.0</td></tr>
+<tr><td><code>owner</code></td><td>Design Lead</td></tr>
+<tr><td><code>name</code></td><td>Roomly Calm Productivity</td></tr>
+<tr><td><code>colors.primary</code></td><td><span class="swatch" style="background:#2D5BFF"></span>#2D5BFF</td></tr>
+<tr><td><code>colors.secondary</code></td><td><span class="swatch" style="background:#5B6472"></span>#5B6472</td></tr>
+<tr><td><code>colors.accent</code></td><td><span class="swatch" style="background:#16A34A"></span>#16A34A</td></tr>
+<tr><td><code>colors.neutral</code></td><td><span class="swatch" style="background:#F5F7FA"></span>#F5F7FA</td></tr>
+<tr><td><code>colors.surface</code></td><td><span class="swatch" style="background:#FFFFFF"></span>#FFFFFF</td></tr>
+<tr><td><code>colors.error</code></td><td><span class="swatch" style="background:#DC2626"></span>#DC2626</td></tr>
+<tr><td><code>typography.headline-lg.fontFamily</code></td><td>Inter</td></tr>
+<tr><td><code>typography.headline-lg.fontSize</code></td><td>28px</td></tr>
+<tr><td><code>typography.headline-lg.fontWeight</code></td><td>600</td></tr>
+<tr><td><code>typography.headline-lg.lineHeight</code></td><td>1.2</td></tr>
+<tr><td><code>typography.body-md.fontFamily</code></td><td>Inter</td></tr>
+<tr><td><code>typography.body-md.fontSize</code></td><td>16px</td></tr>
+<tr><td><code>typography.body-md.fontWeight</code></td><td>400</td></tr>
+<tr><td><code>typography.body-md.lineHeight</code></td><td>1.6</td></tr>
+<tr><td><code>typography.label-sm.fontFamily</code></td><td>Inter</td></tr>
+<tr><td><code>typography.label-sm.fontSize</code></td><td>12px</td></tr>
+<tr><td><code>typography.label-sm.fontWeight</code></td><td>500</td></tr>
+<tr><td><code>typography.label-sm.lineHeight</code></td><td>1</td></tr>
+<tr><td><code>typography.label-sm.letterSpacing</code></td><td>0.04em</td></tr>
+<tr><td><code>spacing.xs</code></td><td>4px</td></tr>
+<tr><td><code>spacing.sm</code></td><td>8px</td></tr>
+<tr><td><code>spacing.md</code></td><td>16px</td></tr>
+<tr><td><code>spacing.lg</code></td><td>24px</td></tr>
+<tr><td><code>spacing.xl</code></td><td>40px</td></tr>
+<tr><td><code>rounded.sm</code></td><td>6px</td></tr>
+<tr><td><code>rounded.md</code></td><td>10px</td></tr>
+<tr><td><code>rounded.full</code></td><td>9999px</td></tr>
+<tr><td><code>components.button-primary.backgroundColor</code></td><td>{colors.primary}</td></tr>
+<tr><td><code>components.button-primary.textColor</code></td><td><span class="swatch" style="background:#FFFFFF"></span>#FFFFFF</td></tr>
+<tr><td><code>components.button-primary.rounded</code></td><td>{rounded.md}</td></tr>
+<tr><td><code>components.button-primary.padding</code></td><td>12px</td></tr>
+<tr><td><code>components.badge-confirmed.backgroundColor</code></td><td>{colors.accent}</td></tr>
+<tr><td><code>components.badge-confirmed.textColor</code></td><td><span class="swatch" style="background:#FFFFFF"></span>#FFFFFF</td></tr>
+<tr><td><code>components.badge-confirmed.rounded</code></td><td>{rounded.full}</td></tr>
+</tbody></table></div>
+<h1 id="design-system--roomly">Design System — Roomly</h1>
+<blockquote>
+<p>Visual design system for Roomly. Tokens in the YAML block are normative; the prose explains how to apply them.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>Roomly should feel fast, calm, and trustworthy — booking a room is a quick utility task, not a destination. Favor whitespace and clear status over decoration.</p>
+<h2 id="colors">Colors</h2>
+<ul>
+<li><strong>Primary (#2D5BFF):</strong> the single action color — book, confirm, primary buttons.</li>
+<li><strong>Accent (#16A34A):</strong> reserved for the <code>Confirmed</code> state and success.</li>
+<li><strong>Error (#DC2626):</strong> conflict and &quot;too late to cancel&quot; messages only.</li>
+<li><strong>Neutral (#F5F7FA):</strong> page background; cards sit on <code>surface</code> white.</li>
+</ul>
+<h2 id="typography">Typography</h2>
+<p>Inter throughout. Headlines at 28px/600 for page titles; body at 16px for content; uppercase-ish labels at 12px with light tracking for metadata (room capacity, timestamps).</p>
+<h2 id="layout">Layout</h2>
+<p>8px spacing scale. Room cards use 24px (<code>lg</code>) internal padding and a max content width of 1100px on desktop.</p>
+<h2 id="components">Components</h2>
+<p>Primary button uses <code>colors.primary</code> with 10px radius. The booking status uses <code>badge-confirmed</code> (accent, pill) for confirmed and <code>colors.secondary</code> for cancelled.</p>
+<h2 id="dos-and-donts">Do's and Don'ts</h2>
+<ul>
+<li>Do use primary blue for exactly one action per screen.</li>
+<li>Don't use accent green for anything except success/confirmed states.</li>
+<li>Do keep conflict messaging in <code>error</code> red with a clear next step.</li>
+</ul>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="SITEMAP.html"><span>Previous</span><strong>Sitemap</strong></a><a class="pager-next" href="DATABASE.html"><span>Next</span><strong>Database</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

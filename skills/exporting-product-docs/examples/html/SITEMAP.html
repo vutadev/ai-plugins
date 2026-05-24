@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sitemap · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html" class="active">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Design</span><span>/</span><span class="current">Sitemap</span></nav>
+<article class="doc">
+<h1 id="sitemap--roomly">Sitemap — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> USERFLOWS v1.0.0, USECASES v1.0.0
+<strong>Owner:</strong> Product Lead</p>
+<hr>
+<p>UI routes and page hierarchy. Each route ties to a flow or use case.</p>
+<h2 id="1-routes">1. Routes</h2>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Page</th>
+<th>Auth</th>
+<th>Realizes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/login</code></td>
+<td>Sign-in</td>
+<td>Public</td>
+<td><code>FR-AUTH-001</code></td>
+</tr>
+<tr>
+<td><code>/rooms</code></td>
+<td>Room search</td>
+<td>Employee</td>
+<td><code>UF-01</code></td>
+</tr>
+<tr>
+<td><code>/rooms/:id</code></td>
+<td>Room detail + book</td>
+<td>Employee</td>
+<td><code>UF-01</code></td>
+</tr>
+<tr>
+<td><code>/bookings</code></td>
+<td>My bookings</td>
+<td>Employee</td>
+<td><code>UF-02</code></td>
+</tr>
+<tr>
+<td><code>/admin/rooms</code></td>
+<td>Room management</td>
+<td>Manager</td>
+<td><code>UC-ADMIN-01</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-hierarchy">2. Hierarchy</h2>
+<pre class="mermaid">flowchart TD
+  Login[/login] --&gt; Rooms[/rooms]
+  Rooms --&gt; Room[/rooms/:id]
+  Rooms --&gt; Bookings[/bookings]
+  Login --&gt; Admin[/admin/rooms]
+</pre>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/rooms</code></td>
+<td><code>UF-01</code></td>
+</tr>
+<tr>
+<td><code>/bookings</code></td>
+<td><code>UF-02</code></td>
+</tr>
+<tr>
+<td><code>/admin/rooms</code></td>
+<td><code>UC-ADMIN-01</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Product Lead</td>
+<td>Initial route map.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="USERFLOWS.html"><span>Previous</span><strong>User Flows</strong></a><a class="pager-next" href="DESIGN.html"><span>Next</span><strong>Design System</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

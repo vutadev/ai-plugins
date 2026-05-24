@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Stories · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html" class="active">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Requirements</span><span>/</span><span class="current">User Stories</span></nav>
+<article class="doc">
+<h1 id="user-stories--roomly">User Stories — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> SRS v1.0.0
+<strong>Owner:</strong> Product Lead</p>
+<hr>
+<p>Sprint-ready slices with Gherkin acceptance criteria. Each story is INVEST-checked and maps to an SRS requirement; see <a href="./SRS.html#32-create">SRS §3.2</a> for the booking rule these stories satisfy.</p>
+<h2 id="us-book-01-book-a-room">US-BOOK-01 Book a room</h2>
+<blockquote>
+<p>As an <strong>Employee</strong>, I want to reserve a free room for a time slot, so that I have a guaranteed space for my meeting.</p>
+</blockquote>
+<ul>
+<li><code>AC-BOOK-01-1</code> <strong>Given</strong> a room free from 10:00–11:00, <strong>When</strong> I book that slot, <strong>Then</strong> the booking is confirmed and shows status <code>Confirmed</code>.</li>
+<li><code>AC-BOOK-01-2</code> <strong>Given</strong> a room already booked 10:00–11:00, <strong>When</strong> I try to book 10:30–11:30, <strong>Then</strong> I see a &quot;room is taken&quot; message and no booking is created.</li>
+</ul>
+<p><strong>INVEST:</strong> Independent of US-BOOK-02; valuable (core flow); estimable (~2d); testable via <code>AC-BOOK-01-*</code>.</p>
+<h2 id="us-book-02-cancel-a-booking">US-BOOK-02 Cancel a booking</h2>
+<blockquote>
+<p>As an <strong>Employee</strong>, I want to cancel a booking I no longer need, so that the room frees up for others.</p>
+</blockquote>
+<ul>
+<li><code>AC-BOOK-02-1</code> <strong>Given</strong> my booking starts in 60 minutes, <strong>When</strong> I cancel it, <strong>Then</strong> its status becomes <code>Cancelled</code> and the slot is searchable again.</li>
+<li><code>AC-BOOK-02-2</code> <strong>Given</strong> my booking starts in 5 minutes, <strong>When</strong> I try to cancel, <strong>Then</strong> I see a &quot;too late to cancel&quot; message (<code>BR-BOOK-03</code>).</li>
+</ul>
+<p><strong>INVEST:</strong> Independent; small; testable via <code>AC-BOOK-02-*</code>.</p>
+<h2 id="us-auth-01-sign-in">US-AUTH-01 Sign in</h2>
+<blockquote>
+<p>As an <strong>Employee</strong>, I want to sign in with my work account, so that my bookings are tied to me.</p>
+</blockquote>
+<ul>
+<li><code>AC-AUTH-01-1</code> <strong>Given</strong> a personal email, <strong>When</strong> I attempt sign-in, <strong>Then</strong> access is denied (<code>BR-AUTH-01</code>).</li>
+</ul>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>US-BOOK-01</code></td>
+<td><code>FR-BOOK-001</code></td>
+</tr>
+<tr>
+<td><code>US-BOOK-02</code></td>
+<td><code>FR-BOOK-002</code></td>
+</tr>
+<tr>
+<td><code>US-AUTH-01</code></td>
+<td><code>FR-AUTH-001</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Product Lead</td>
+<td>Initial stories with Gherkin AC.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="SRS.html"><span>Previous</span><strong>SRS</strong></a><a class="pager-next" href="USECASES.html"><span>Next</span><strong>Use Cases</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

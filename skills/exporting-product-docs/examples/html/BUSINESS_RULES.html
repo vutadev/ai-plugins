@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Rules · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html" class="active">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Product</span><span>/</span><span class="current">Business Rules</span></nav>
+<article class="doc">
+<h1 id="business-rules--roomly">Business Rules — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> PRD v1.0.0
+<strong>Owner:</strong> Product Lead</p>
+<hr>
+<p>Durable policy that survives code rewrites. SRS requirements (<a href="./SRS.html">SRS</a>) implement these rules.</p>
+<h2 id="1-booking-rules">1. Booking rules</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BR-BOOK-01</code></td>
+<td>A room MUST NOT hold two confirmed bookings whose time ranges overlap.</td>
+</tr>
+<tr>
+<td><code>BR-BOOK-02</code></td>
+<td>A single booking MUST NOT exceed 4 hours.</td>
+</tr>
+<tr>
+<td><code>BR-BOOK-03</code></td>
+<td>A booking MAY be cancelled only 15 minutes or more before its start time.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-access-rules">2. Access rules</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BR-AUTH-01</code></td>
+<td>Only users with a verified <code>@roomly.example</code> corporate email MAY sign in.</td>
+</tr>
+<tr>
+<td><code>BR-ADMIN-01</code></td>
+<td>Only Office Managers MAY create, edit, or retire rooms.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BR-BOOK-01</code></td>
+<td><code>F2</code></td>
+</tr>
+<tr>
+<td><code>BR-BOOK-02</code></td>
+<td><code>F2</code></td>
+</tr>
+<tr>
+<td><code>BR-BOOK-03</code></td>
+<td><code>F3</code></td>
+</tr>
+<tr>
+<td><code>BR-AUTH-01</code></td>
+<td><code>F4</code></td>
+</tr>
+<tr>
+<td><code>BR-ADMIN-01</code></td>
+<td><code>F5</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Product Lead</td>
+<td>Initial policy set.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="ARCHITECTURE.html"><span>Previous</span><strong>Architecture</strong></a><a class="pager-next" href="SRS.html"><span>Next</span><strong>SRS</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

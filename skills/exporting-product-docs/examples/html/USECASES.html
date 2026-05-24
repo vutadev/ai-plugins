@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Use Cases · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html" class="active">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Requirements</span><span>/</span><span class="current">Use Cases</span></nav>
+<article class="doc">
+<h1 id="use-cases--roomly">Use Cases — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> SRS v1.0.0, USER_STORIES v1.0.0
+<strong>Owner:</strong> Product Lead</p>
+<hr>
+<p>Actor-driven interactions. Each use case realizes one or more SRS requirements.</p>
+<h2 id="uc-book-01-reserve-a-room">UC-BOOK-01 Reserve a room</h2>
+<ul>
+<li><strong>Actor:</strong> Employee</li>
+<li><strong>Precondition:</strong> Signed in (<code>FR-AUTH-001</code>).</li>
+<li><strong>Main flow:</strong> search availability → pick room + slot → confirm → see <code>Confirmed</code>.</li>
+<li><strong>Alt flow:</strong> slot taken → <code>409 Conflict</code> → return to search.</li>
+<li><strong>Postcondition:</strong> A confirmed booking exists for the slot.</li>
+</ul>
+<h2 id="uc-book-02-cancel-a-reservation">UC-BOOK-02 Cancel a reservation</h2>
+<ul>
+<li><strong>Actor:</strong> Employee</li>
+<li><strong>Precondition:</strong> Owns a future booking.</li>
+<li><strong>Main flow:</strong> open booking → cancel → slot frees.</li>
+<li><strong>Exception:</strong> within 15 min of start → cancellation refused (<code>BR-BOOK-03</code>).</li>
+</ul>
+<h2 id="uc-admin-01-add-a-room">UC-ADMIN-01 Add a room</h2>
+<ul>
+<li><strong>Actor:</strong> Office Manager</li>
+<li><strong>Precondition:</strong> Has manager role (<code>BR-ADMIN-01</code>).</li>
+<li><strong>Main flow:</strong> open admin → add room (name, capacity, floor) → room appears in search.</li>
+</ul>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UC-BOOK-01</code></td>
+<td><code>FR-BOOK-001</code>, <code>US-BOOK-01</code></td>
+</tr>
+<tr>
+<td><code>UC-BOOK-02</code></td>
+<td><code>FR-BOOK-002</code>, <code>US-BOOK-02</code></td>
+</tr>
+<tr>
+<td><code>UC-ADMIN-01</code></td>
+<td><code>FR-ADMIN-001</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Product Lead</td>
+<td>Initial use cases.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="USER_STORIES.html"><span>Previous</span><strong>User Stories</strong></a><a class="pager-next" href="USERFLOWS.html"><span>Next</span><strong>User Flows</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

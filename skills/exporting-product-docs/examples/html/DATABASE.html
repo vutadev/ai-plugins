@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Database · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html" class="active">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Engineering</span><span>/</span><span class="current">Database</span></nav>
+<article class="doc">
+<h1 id="database-design--roomly">Database Design — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> SRS v1.0.0, ARCHITECTURE v1.0.0
+<strong>Owner:</strong> Tech Lead</p>
+<hr>
+<p>Physical schema for PostgreSQL (<code>TS-DATA-01</code>). The exclusion constraint on <code>db.bookings</code> enforces <code>BR-BOOK-01</code> at the datastore (<code>AD-02</code>).</p>
+<h2 id="1-er-diagram">1. ER diagram</h2>
+<pre class="mermaid">erDiagram
+  USERS ||--o{ BOOKINGS : makes
+  ROOMS ||--o{ BOOKINGS : holds
+  USERS {
+    uuid id PK
+    text email
+    text role
+  }
+  ROOMS {
+    uuid id PK
+    text name
+    int capacity
+    int floor
+    bool retired
+  }
+  BOOKINGS {
+    uuid id PK
+    uuid user_id FK
+    uuid room_id FK
+    tstzrange during
+    text status
+  }
+</pre>
+<h2 id="2-ddl">2. DDL</h2>
+<pre class="hljs"><code><span class="hljs-keyword">CREATE TABLE</span> rooms (
+  id       uuid <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  name     text <span class="hljs-keyword">NOT NULL</span>,
+  capacity <span class="hljs-type">int</span>  <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">CHECK</span> (capacity <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>),
+  floor    <span class="hljs-type">int</span>  <span class="hljs-keyword">NOT NULL</span>,
+  retired  <span class="hljs-type">boolean</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">false</span>
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> bookings (
+  id      uuid <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  user_id uuid <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> users(id),
+  room_id uuid <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> rooms(id),
+  during  tstzrange <span class="hljs-keyword">NOT NULL</span>,
+  status  text <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">&#x27;confirmed&#x27;</span>,
+  <span class="hljs-comment">-- BR-BOOK-01: no two confirmed bookings overlap for one room</span>
+  EXCLUDE <span class="hljs-keyword">USING</span> gist (room_id <span class="hljs-keyword">WITH</span> <span class="hljs-operator">=</span>, during <span class="hljs-keyword">WITH</span> <span class="hljs-operator">&amp;&amp;</span>)
+    <span class="hljs-keyword">WHERE</span> (status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;confirmed&#x27;</span>)
+);
+</code></pre>
+<h2 id="3-tables">3. Tables</h2>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>db.users</code></td>
+<td>Authenticated employees and managers.</td>
+</tr>
+<tr>
+<td><code>db.rooms</code></td>
+<td>Bookable rooms.</td>
+</tr>
+<tr>
+<td><code>db.bookings</code></td>
+<td>Confirmed/cancelled reservations.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>db.bookings</code></td>
+<td><code>FR-BOOK-001</code>, <code>BR-BOOK-01</code>, <code>AD-02</code></td>
+</tr>
+<tr>
+<td><code>db.rooms</code></td>
+<td><code>FR-ROOM-001</code>, <code>FR-ADMIN-001</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Tech Lead</td>
+<td>Initial schema + exclusion constraint.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="DESIGN.html"><span>Previous</span><strong>Design System</strong></a><a class="pager-next" href="API_REFERENCE.html"><span>Next</span><strong>API Reference</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

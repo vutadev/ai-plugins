@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Reference · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html" class="active">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Engineering</span><span>/</span><span class="current">API Reference</span></nav>
+<article class="doc">
+<h1 id="api-reference--roomly">API Reference — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> SRS v1.0.0, DATABASE v1.0.0
+<strong>Owner:</strong> Tech Lead</p>
+<hr>
+<p>HTTP contracts for the Roomly API (<code>C-02</code>). All booking mutations require an authenticated session (<code>NFR-SEC-001</code>).</p>
+<h2 id="1-at-a-glance">1. At a glance</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Method + Path</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>API-AUTH-001</code></td>
+<td><code>POST /auth/session</code></td>
+<td><code>FR-AUTH-001</code></td>
+</tr>
+<tr>
+<td><code>API-ROOM-001</code></td>
+<td><code>GET /rooms</code></td>
+<td><code>FR-ROOM-001</code></td>
+</tr>
+<tr>
+<td><code>API-BOOK-001</code></td>
+<td><code>POST /bookings</code></td>
+<td><code>FR-BOOK-001</code></td>
+</tr>
+<tr>
+<td><code>API-BOOK-002</code></td>
+<td><code>DELETE /bookings/:id</code></td>
+<td><code>FR-BOOK-002</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-search-rooms--api-room-001">2. Search rooms — <code>API-ROOM-001</code></h2>
+<pre class="hljs"><code>GET /rooms?from=2026-05-25T10:00:00Z&amp;to=2026-05-25T11:00:00Z
+<span class="hljs-attribute">Authorization</span><span class="hljs-punctuation">: </span>Bearer &lt;session&gt;
+</code></pre>
+<pre class="hljs"><code><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;rooms&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;r-12&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Orchid&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;capacity&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;floor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="3-create-booking--api-book-001">3. Create booking — <code>API-BOOK-001</code></h2>
+<pre class="hljs"><code>POST /bookings
+<span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/json
+<span class="hljs-attribute">Authorization</span><span class="hljs-punctuation">: </span>Bearer &lt;session&gt;
+</code></pre>
+<pre class="hljs"><code><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;roomId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;r-12&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;from&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2026-05-25T10:00:00Z&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;to&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2026-05-25T11:00:00Z&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>On overlap the API returns <code>409 Conflict</code> (<code>BR-BOOK-01</code>). See <a href="./SRS.html#33-cancel">SRS §3.3</a> for the cancel rule paired with this endpoint.</p>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>API-ROOM-001</code></td>
+<td><code>FR-ROOM-001</code></td>
+</tr>
+<tr>
+<td><code>API-BOOK-001</code></td>
+<td><code>FR-BOOK-001</code>, <code>BR-BOOK-01</code></td>
+</tr>
+<tr>
+<td><code>API-BOOK-002</code></td>
+<td><code>FR-BOOK-002</code>, <code>BR-BOOK-03</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Tech Lead</td>
+<td>Initial endpoint contracts.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="DATABASE.html"><span>Previous</span><strong>Database</strong></a><a class="pager-next" href="TESTCASES.html"><span>Next</span><strong>Test Cases</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRD · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html" class="active">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Product</span><span>/</span><span class="current">PRD</span></nav>
+<article class="doc">
+<h1 id="product-requirements-document--roomly">Product Requirements Document — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> Founder brief 2026-05-10
+<strong>Owner:</strong> Product Lead</p>
+<hr>
+<blockquote>
+<p>Illustrative example for the <code>exporting-product-docs</code> skill. Roomly is a small office meeting-room booking web app, used here to show a coherent, cross-linked doc set.</p>
+</blockquote>
+<p>Roomly lets employees find an open meeting room and book it in seconds, and lets office managers keep room inventory and policy in one place. This PRD owns business scope; every downstream doc refines it without inventing new scope.</p>
+<p><strong>How to read:</strong> Start with §2 Features and §4 Personas. Engineering should pair this with <a href="./SRS.html">SRS</a> and <a href="./ARCHITECTURE.html">ARCHITECTURE</a>.</p>
+<h2 id="1-problem--goals">1. Problem &amp; Goals</h2>
+<p>Employees waste time hunting for free rooms and double-book by accident. Roomly gives a single source of truth for availability and bookings.</p>
+<ul>
+<li><strong>G1</strong> Cut time-to-book to under 30 seconds.</li>
+<li><strong>G2</strong> Eliminate double-bookings.</li>
+<li><strong>G3</strong> Give managers self-service room and policy control.</li>
+</ul>
+<p><strong>Success measures:</strong> median booking flow &lt; 30s; zero overlapping confirmed bookings; 90% of rooms managed without IT tickets.</p>
+<h2 id="2-features">2. Features</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Feature</th>
+<th>Summary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>F1</code></td>
+<td>Room search &amp; availability</td>
+<td>Find rooms free in a time window.</td>
+</tr>
+<tr>
+<td><code>F2</code></td>
+<td>Booking create &amp; confirm</td>
+<td>Reserve a room for a slot.</td>
+</tr>
+<tr>
+<td><code>F3</code></td>
+<td>Booking cancel</td>
+<td>Release a reserved slot.</td>
+</tr>
+<tr>
+<td><code>F4</code></td>
+<td>Authentication</td>
+<td>Corporate email sign-in.</td>
+</tr>
+<tr>
+<td><code>F5</code></td>
+<td>Room management</td>
+<td>Managers add/edit/retire rooms.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-out-of-scope-v1">3. Out of Scope (v1)</h2>
+<ul>
+<li>Recurring bookings.</li>
+<li>Calendar (Google/Outlook) two-way sync — see <a href="./EXTERNAL_DOCS.html">EXTERNAL_DOCS</a> for the iCal reference kept for v2.</li>
+<li>Mobile native apps (responsive web only).</li>
+</ul>
+<h2 id="4-personas">4. Personas</h2>
+<ul>
+<li><strong>Employee</strong> — books a room for a meeting; wants speed and certainty.</li>
+<li><strong>Office Manager</strong> — owns room inventory and booking policy.</li>
+</ul>
+<h2 id="5-doc-set">5. Doc Set</h2>
+<p>Archetype: <strong>Web App</strong> — all 15 docs included to demonstrate the full export. No optional docs skipped.</p>
+<h2 id="6-open-questions">6. Open Questions</h2>
+<ul>
+<li>None blocking v1. Recurring bookings deferred to roadmap M3 (see <a href="./ROADMAP.html">ROADMAP</a>).</li>
+</ul>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Product Lead</td>
+<td>Initial scope frozen for v1.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><span></span><a class="pager-next" href="TECHSTACK.html"><span>Next</span><strong>Tech Stack</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

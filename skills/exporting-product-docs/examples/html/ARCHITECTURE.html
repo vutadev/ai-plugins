@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html" class="active">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Engineering</span><span>/</span><span class="current">Architecture</span></nav>
+<article class="doc">
+<h1 id="architecture--roomly">Architecture — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> PRD v1.0.0, TECHSTACK v1.0.0
+<strong>Owner:</strong> Tech Lead</p>
+<hr>
+<p>Component and deployment view for Roomly, plus ADR-lite decisions. Stack choices live in <a href="./TECHSTACK.html#2-stack-by-layer">TECHSTACK §2</a>.</p>
+<h2 id="1-components">1. Components</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Component</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-01</code></td>
+<td>Web client</td>
+<td>React UI for search, booking, admin.</td>
+</tr>
+<tr>
+<td><code>C-02</code></td>
+<td>API server</td>
+<td>Booking logic, policy enforcement, persistence.</td>
+</tr>
+<tr>
+<td><code>C-03</code></td>
+<td>PostgreSQL</td>
+<td>Durable store for <code>db.users</code>, <code>db.rooms</code>, <code>db.bookings</code>.</td>
+</tr>
+<tr>
+<td><code>C-04</code></td>
+<td>Corporate IdP</td>
+<td>OAuth identity provider for <code>F4</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-booking-sequence">2. Booking sequence</h2>
+<p>The confirm path enforces <code>BR-BOOK-01</code> (no double-booking) inside one transaction.</p>
+<pre class="mermaid">sequenceDiagram
+  actor E as Employee
+  participant W as Web client (C-01)
+  participant A as API server (C-02)
+  participant D as PostgreSQL (C-03)
+  E-&gt;&gt;W: Pick room + time slot
+  W-&gt;&gt;A: POST /bookings
+  A-&gt;&gt;D: BEGIN; insert booking (exclusion constraint)
+  alt slot free
+    D--&gt;&gt;A: committed
+    A--&gt;&gt;W: 201 Created
+  else slot taken
+    D--&gt;&gt;A: constraint violation
+    A--&gt;&gt;W: 409 Conflict
+  end
+</pre>
+<h2 id="3-decisions-adr-lite">3. Decisions (ADR-lite)</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Decision</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AD-01</code></td>
+<td>Single Next.js app hosts UI + API</td>
+<td>Small team, low traffic; avoids a separate service.</td>
+</tr>
+<tr>
+<td><code>AD-02</code></td>
+<td>DB exclusion constraint for overlap</td>
+<td>Pushes <code>BR-BOOK-01</code> to the datastore — race-proof, no app-level locks.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-02</code></td>
+<td><code>F2</code>, <code>F3</code>, <code>BR-BOOK-01</code></td>
+</tr>
+<tr>
+<td><code>C-04</code></td>
+<td><code>F4</code></td>
+</tr>
+<tr>
+<td><code>AD-02</code></td>
+<td><code>BR-BOOK-01</code>, <code>NFR-SEC-001</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Tech Lead</td>
+<td>Initial components + ADRs.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="TECHSTACK.html"><span>Previous</span><strong>Tech Stack</strong></a><a class="pager-next" href="BUSINESS_RULES.html"><span>Next</span><strong>Business Rules</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadmap · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html" class="active">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Delivery</span><span>/</span><span class="current">Roadmap</span></nav>
+<article class="doc">
+<h1 id="roadmap--roomly">Roadmap — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> PRD v1.0.0
+<strong>Owner:</strong> Product Lead</p>
+<hr>
+<p>Milestones, dates, and exit gates. Sequencing serves the PRD <a href="./PRD.html#2-features">features</a>.</p>
+<h2 id="1-milestones">1. Milestones</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Milestone</th>
+<th>Target</th>
+<th>Exit gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M0</code></td>
+<td>Foundation</td>
+<td>2026-06-06</td>
+<td>Auth (<code>F4</code>) works; schema migrated.</td>
+</tr>
+<tr>
+<td><code>M1</code></td>
+<td>Booking MVP</td>
+<td>2026-06-27</td>
+<td><code>F1</code>+<code>F2</code>+<code>F3</code> pass <code>TC-BOOK-001..003</code>.</td>
+</tr>
+<tr>
+<td><code>M2</code></td>
+<td>Admin</td>
+<td>2026-07-11</td>
+<td><code>F5</code> room management live.</td>
+</tr>
+<tr>
+<td><code>M3</code></td>
+<td>Polish &amp; v2 prep</td>
+<td>2026-07-25</td>
+<td>NFRs met; recurring-booking spike done.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-dependencies">2. Dependencies</h2>
+<pre class="mermaid">flowchart LR
+  M0 --&gt; M1 --&gt; M2 --&gt; M3
+</pre>
+<h2 id="3-deferred-to-v2">3. Deferred to v2</h2>
+<ul>
+<li>Recurring bookings.</li>
+<li>Calendar sync (see <a href="./EXTERNAL_DOCS.html">EXTERNAL_DOCS</a>, <code>EXT-STD-001</code>).</li>
+</ul>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Product Lead</td>
+<td>Initial milestone plan.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="TESTCASES.html"><span>Previous</span><strong>Test Cases</strong></a><a class="pager-next" href="EXTERNAL_DOCS.html"><span>Next</span><strong>External Docs</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

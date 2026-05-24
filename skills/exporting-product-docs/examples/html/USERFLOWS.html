@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Flows · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html" class="active">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Requirements</span><span>/</span><span class="current">User Flows</span></nav>
+<article class="doc">
+<h1 id="user-flows--roomly">User Flows — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> USECASES v1.0.0
+<strong>Owner:</strong> Product Lead</p>
+<hr>
+<p>End-to-end journeys. Diagrams realize the use cases in <a href="./USECASES.html">USECASES</a>.</p>
+<h2 id="uf-01-search-to-booking">UF-01 Search to booking</h2>
+<p><strong>Trigger:</strong> Employee needs a room for a meeting.</p>
+<pre class="mermaid">flowchart TD
+  A([Need a room]) --&gt; B[Open /rooms]
+  B --&gt; C[Enter date + time window]
+  C --&gt; D{Any room free?}
+  D -- No --&gt; E[Adjust window]
+  E --&gt; C
+  D -- Yes --&gt; F[Select room]
+  F --&gt; G[Confirm booking]
+  G --&gt; H{Slot still free?}
+  H -- No --&gt; I[Show 409 conflict]
+  I --&gt; C
+  H -- Yes --&gt; J([Booking confirmed])
+</pre>
+<p><strong>Routes:</strong> <code>/rooms</code>, <code>/rooms/:id</code>
+<strong>Realizes:</strong> <code>UC-BOOK-01</code></p>
+<h2 id="uf-02-cancel-a-booking">UF-02 Cancel a booking</h2>
+<p><strong>Trigger:</strong> Employee no longer needs a reserved room.</p>
+<pre class="mermaid">flowchart TD
+  A([Open /bookings]) --&gt; B[Select booking]
+  B --&gt; C{15+ min before start?}
+  C -- No --&gt; D[Show 'too late to cancel']
+  C -- Yes --&gt; E[Cancel]
+  E --&gt; F([Slot released])
+</pre>
+<p><strong>Routes:</strong> <code>/bookings</code>
+<strong>Realizes:</strong> <code>UC-BOOK-02</code></p>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UF-01</code></td>
+<td><code>UC-BOOK-01</code></td>
+</tr>
+<tr>
+<td><code>UF-02</code></td>
+<td><code>UC-BOOK-02</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Product Lead</td>
+<td>Initial flows with diagrams.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="USECASES.html"><span>Previous</span><strong>Use Cases</strong></a><a class="pager-next" href="SITEMAP.html"><span>Next</span><strong>Sitemap</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

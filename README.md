@@ -7,6 +7,7 @@ Reusable skills for AI coding agents. Install with a single command via [skills.
 | Skill | Description |
 |-------|-------------|
 | **managing-product-docs** | Create, extract, update, and audit product documentation (PRD, tech stack, architecture, SRS, design system, database, API reference, test cases, roadmap, and more) for software projects. Supports greenfield init, brownfield extraction, incremental updates, and gap audits. |
+| **exporting-product-docs** | Export a `managing-product-docs` markdown doc set to a self-contained, offline, deployable docs-site — left sidebar, light/dark toggle, client-side search, on-this-page TOC, Mermaid diagrams, code highlighting, resolved cross-doc links. Supports per-doc + index home and single combined-file output. |
 
 ## Installation
 

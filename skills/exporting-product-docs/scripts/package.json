@@ -1,0 +1,18 @@
+{
+  "name": "exporting-product-docs-build",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Build tooling for the exporting-product-docs skill. Bundles src/build.js into a self-contained build.mjs so end users run it with zero npm install.",
+  "scripts": {
+    "build": "esbuild src/build.js --bundle --platform=node --format=esm --target=node18 --outfile=build.mjs --banner:js=\"#!/usr/bin/env node\""
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "github-slugger": "^2.0.0",
+    "highlight.js": "^11.10.0",
+    "js-yaml": "^4.1.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0"
+  }
+}

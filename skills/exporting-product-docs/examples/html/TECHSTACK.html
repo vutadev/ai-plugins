@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tech Stack · Roomly</title>
+<script>(function(){try{var t=localStorage.getItem('docs-theme')||((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/doc.css">
+<link rel="stylesheet" href="assets/highlight.css">
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menubtn" aria-label="Toggle navigation" aria-expanded="false">≡</button>
+  <a class="brand" href="index.html">Roomly</a>
+  <div class="search"><input id="docsearch" type="search" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="search-results" id="searchresults" hidden></div></div>
+  <button class="theme-btn" id="themebtn" aria-label="Toggle theme" title="Toggle light / dark"></button>
+</header>
+<div class="scrim" id="scrim"></div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><div class="nav-group"><p class="nav-group-label">Product</p><ul><li><a href="PRD.html">PRD</a></li><li><a href="BUSINESS_RULES.html">Business Rules</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Requirements</p><ul><li><a href="SRS.html">SRS</a></li><li><a href="USER_STORIES.html">User Stories</a></li><li><a href="USECASES.html">Use Cases</a></li><li><a href="USERFLOWS.html">User Flows</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Engineering</p><ul><li><a href="TECHSTACK.html" class="active">Tech Stack</a></li><li><a href="ARCHITECTURE.html">Architecture</a></li><li><a href="DATABASE.html">Database</a></li><li><a href="API_REFERENCE.html">API Reference</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Design</p><ul><li><a href="SITEMAP.html">Sitemap</a></li><li><a href="DESIGN.html">Design System</a></li></ul></div><div class="nav-group"><p class="nav-group-label">Delivery</p><ul><li><a href="TESTCASES.html">Test Cases</a></li><li><a href="ROADMAP.html">Roadmap</a></li><li><a href="EXTERNAL_DOCS.html">External Docs</a></li></ul></div></aside>
+  <main class="content">
+<nav class="breadcrumb"><a href="index.html">Docs</a><span>/</span><span>Engineering</span><span>/</span><span class="current">Tech Stack</span></nav>
+<article class="doc">
+<h1 id="tech-stack--roomly">Tech Stack — Roomly</h1>
+<p><strong>Version:</strong> 1.0.0
+<strong>Date:</strong> 2026-05-24
+<strong>Status:</strong> Final
+<strong>Source:</strong> PRD v1.0.0
+<strong>Owner:</strong> Tech Lead</p>
+<hr>
+<p>Technology choices for Roomly, pinned to versions. Downstream docs (<a href="./ARCHITECTURE.html">ARCHITECTURE</a>, <a href="./DATABASE.html">DATABASE</a>) build on these.</p>
+<h2 id="1-at-a-glance">1. At a glance</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Layer</th>
+<th>Choice</th>
+<th style="text-align:right">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TS-LANG-01</code></td>
+<td>Language</td>
+<td>TypeScript</td>
+<td style="text-align:right">5.4</td>
+</tr>
+<tr>
+<td><code>TS-FW-01</code></td>
+<td>Web framework</td>
+<td>Next.js (React)</td>
+<td style="text-align:right">14.2</td>
+</tr>
+<tr>
+<td><code>TS-RT-01</code></td>
+<td>Runtime</td>
+<td>Node.js</td>
+<td style="text-align:right">20 LTS</td>
+</tr>
+<tr>
+<td><code>TS-DATA-01</code></td>
+<td>Datastore</td>
+<td>PostgreSQL</td>
+<td style="text-align:right">16</td>
+</tr>
+<tr>
+<td><code>TS-SEC-01</code></td>
+<td>Auth</td>
+<td>OAuth 2.0 via corporate IdP</td>
+<td style="text-align:right">—</td>
+</tr>
+<tr>
+<td><code>TS-TEST-01</code></td>
+<td>Test</td>
+<td>Vitest + Playwright</td>
+<td style="text-align:right">1.x / 1.4x</td>
+</tr>
+<tr>
+<td><code>TS-INFRA-01</code></td>
+<td>Host</td>
+<td>Fly.io</td>
+<td style="text-align:right">—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-stack-by-layer">2. Stack by Layer</h2>
+<h3 id="21-application">2.1 Application</h3>
+<p>TypeScript end to end (<code>TS-LANG-01</code>) keeps one language across client and API. Next.js (<code>TS-FW-01</code>) serves the React UI and the booking API routes.</p>
+<h3 id="22-data">2.2 Data</h3>
+<p>PostgreSQL (<code>TS-DATA-01</code>) holds users, rooms, and bookings. Concurrency control for <code>BR-BOOK-01</code> uses a transactional exclusion constraint (see <a href="./DATABASE.html">DATABASE</a>).</p>
+<h3 id="23-configuration-sample">2.3 Configuration sample</h3>
+<pre class="hljs"><code><span class="hljs-comment"># fly.toml (excerpt)</span>
+<span class="hljs-attr">app:</span> <span class="hljs-string">roomly</span>
+<span class="hljs-attr">primary_region:</span> <span class="hljs-string">sin</span>
+[<span class="hljs-string">env</span>]
+  <span class="hljs-attr">NODE_ENV:</span> <span class="hljs-string">production</span>
+  <span class="hljs-attr">DATABASE_POOL_MAX:</span> <span class="hljs-string">&quot;10&quot;</span>
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment"># local bootstrap</span>
+pnpm install
+pnpm db:migrate
+pnpm dev
+</code></pre>
+<h2 id="traceability">Traceability</h2>
+<table>
+<thead>
+<tr>
+<th>Local ID</th>
+<th>Upstream IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TS-LANG-01</code></td>
+<td><code>F1</code>, <code>F2</code>, <code>F4</code></td>
+</tr>
+<tr>
+<td><code>TS-DATA-01</code></td>
+<td><code>F1</code>, <code>F2</code>, <code>F3</code></td>
+</tr>
+<tr>
+<td><code>TS-SEC-01</code></td>
+<td><code>F4</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="change-log">Change Log</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-05-24</td>
+<td>Tech Lead</td>
+<td>Initial stack pinned.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+<nav class="pager"><a class="pager-prev" href="PRD.html"><span>Previous</span><strong>PRD</strong></a><a class="pager-next" href="ARCHITECTURE.html"><span>Next</span><strong>Architecture</strong></a></nav>
+  </main>
+  <aside class="toc-rail" id="tocrail"><p class="toc-title">On this page</p><nav id="toc"></nav></aside>
+</div>
+<script src="assets/mermaid.min.js"></script>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
