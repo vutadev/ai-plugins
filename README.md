@@ -91,7 +91,7 @@ npx skills remove -a '*' -s '*' -y
 
 ## Skill: managing-product-docs
 
-Produces a coherent doc set (up to 15 docs) for software project planning. Every doc shares stable IDs and cross-references so implementation can begin without ambiguity.
+Produces a coherent doc set (up to 15 docs) for software project planning. Every doc shares stable IDs and cross-references so implementation can begin without ambiguity. The skill is guide-first: `SKILL.md` routes to detailed `reference/<doc>-guide.md` files and illustrative `examples/*-example.md` files rather than fixed templates.
 
 ### Supported Docs
 
@@ -135,8 +135,8 @@ The skill auto-selects which optional docs to include based on project type:
 
 1. Create a new directory under `skills/`
 2. Add a `SKILL.md` with YAML frontmatter (`name` and `description` fields)
-3. Include any templates and reference files your skill needs
+3. Include any reference files, examples, scripts, or assets your skill needs
 
 ## License
 
-MIT
+MIT for this repository unless otherwise noted. Vendored `google-labs-code/design.md` spec material is Apache-2.0; see `licenses/APACHE-2.0.txt` and `skills/managing-product-docs/reference/design-spec.md`.

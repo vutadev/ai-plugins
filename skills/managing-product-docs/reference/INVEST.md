@@ -1,6 +1,6 @@
 # INVEST Reference
 
-Six criteria for evaluating user-story quality. Apply to every `US-*` in `templates/USER_STORIES.md` §3 INVEST Self-check before flipping a story to `Ready`.
+Six criteria for evaluating user-story quality. Apply to every `US-*` described through `reference/user-stories-guide.md` before marking a story `Ready`.
 
 Source: Bill Wake, *INVEST in Good Stories, and SMART Tasks* (2003). Wording adapted from the BA Zone Digital School training material (Phúc NT, MIT).
 

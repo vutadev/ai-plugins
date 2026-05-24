@@ -93,4 +93,4 @@ Story too big?
                                   scope with implementation depth.
 ```
 
-After splitting: re-run INVEST on each new story. Re-check estimate and AC count. Update the Story Index and traceability tables in `templates/USER_STORIES.md` so the split is auditable.
+After splitting: re-run INVEST on each new story. Re-check estimate and AC count. Update `USER_STORIES.md` Story Index and traceability tables following `reference/user-stories-guide.md` so the split is auditable.

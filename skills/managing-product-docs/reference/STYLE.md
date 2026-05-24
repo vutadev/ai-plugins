@@ -24,7 +24,7 @@ Rules:
 - Source field cites upstream doc + version. Top-level doc (PRD) cites user brief or commit hash.
 - Status: `Draft` while iterating, `Review` when handed to user, `Final` when frozen for the milestone.
 
-**Exception — DESIGN.md:** DESIGN.md uses YAML frontmatter for design tokens (per the [Google design.md spec](https://github.com/google-labs-code/design.md)). Header fields are merged into the YAML block as lowercase keys (`version`, `date`, `status`, `source`, `owner`) alongside `colors`, `typography`, etc. The markdown body begins after the closing `---`. No separate markdown header block.
+**Exception — DESIGN.md:** DESIGN.md uses YAML frontmatter for design tokens per local `reference/design-spec.md` (vendored from the Google design.md spec). Header fields are merged into the YAML block as lowercase keys (`version`, `date`, `status`, `source`, `owner`) alongside `colors`, `typography`, etc. The markdown body begins after the closing `---`. No separate markdown header block.
 
 ## Versioning Rules
 
@@ -47,6 +47,16 @@ First release: `1.0.0` when status flips Draft → Final. Pre-release iterations
 - Row format: `| {version} | {YYYY-MM-DD} | {author} | {what + why, one sentence} |`.
 - Bug fixes cite the originating gap finding: `Fix F-007 from REVIEW_REPORT 2026-04-22`.
 - Decision reversals cite resolution: `Drop F2 mobile per user decision 2026-04-22 (see PRD §12)`.
+
+## Reader-Friendly Writing
+
+- Open each doc with a two-to-four sentence summary and a "How to read" note that names the highest-value sections for the audience.
+- Add an `At a glance` table when a doc contains more than a few features, requirements, components, endpoints, flows, test cases, or milestones.
+- Prefer short tables, bullets, status badges (`Draft`, `Ready`, `Blocked`, `Done`), and direct ID links over long prose paragraphs.
+- Cross-reference stable IDs wherever a reader needs to jump: `F-*`, `FR-*`, `US-*`, `UC-*`, `UF-*`, `API-*`, `TC-*`, and `M*`.
+- Use Mermaid diagrams when a sequence, workflow, dependency chain, or relationship map is faster to understand visually than text.
+- Avoid unexplained jargon. Define project-specific terms the first time they appear, or link to the owning doc/ID.
+- Do not keep empty sections. Omit irrelevant sections or state a short reason when omission affects scope or verification.
 
 ## ID Prefix Registry (CANONICAL — DO NOT INVENT NEW PREFIXES)
 
@@ -94,6 +104,8 @@ Category codes (3–5 letters, ALL CAPS): `AUTH`, `RISK`, `BOT`, `BT` (backtest)
 - ER diagrams: `erDiagram`.
 - Branching flows: `flowchart TD` (top-down).
 - Actor-system: `sequenceDiagram` with `actor` for humans, `participant` for systems.
+- Workflow diagrams should show trigger → main path → branches → exits → recovery.
+- Sequence diagrams should show actors/systems, auth/validation boundaries, error paths when material, and linked IDs in nearby prose.
 - Always test render at mermaid.live before claiming complete.
 - Theme: default Mermaid (no custom CSS — keeps portable).
 
