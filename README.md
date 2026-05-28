@@ -7,7 +7,10 @@ Reusable skills for AI coding agents. Install with a single command via [skills.
 | Skill | Description |
 |-------|-------------|
 | **managing-product-docs** | Create, extract, update, and audit product documentation (PRD, tech stack, architecture, SRS, design system, database, API reference, test cases, roadmap, and more) for software projects. Supports greenfield init, brownfield extraction, incremental updates, and gap audits. |
-| **exporting-product-docs** | Export a `managing-product-docs` markdown doc set to a self-contained, offline, deployable docs-site — left sidebar, light/dark toggle, client-side search, on-this-page TOC, Mermaid diagrams, code highlighting, resolved cross-doc links. Supports per-doc + index home and single combined-file output. |
+| **exporting-product-docs** | Export a `managing-product-docs` markdown doc set to offline HTML for reading, sharing, printing, PDF workflows, or deployment. Supports per-doc docs-site output and a single combined HTML file. |
+| **handoff** | Compact the current conversation into a project-local or global handoff document so another agent can continue the work. Defaults to `.agents/handoff/` and supports `--project` / `--global`. |
+| **post-verify** | Verify completed work against the real runtime behavior or final artifact before calling a task done. Covers backend, frontend, CLI, integration, generated docs, and fullstack checks. |
+| **simplify** | Refine recently modified code for clarity, consistency, maintainability, and reuse without changing behavior. |
 
 ## Installation
 
@@ -68,7 +71,14 @@ npx skills add vutadev/ai-plugins -a <agent-name>
 ### Install a Specific Skill
 
 ```bash
+npx skills add vutadev/ai-plugins -s <skill-name>
+```
+
+Examples:
+
+```bash
 npx skills add vutadev/ai-plugins -s managing-product-docs
+npx skills add vutadev/ai-plugins -s handoff
 ```
 
 ### Install Globally (User-Level)
@@ -131,6 +141,23 @@ The skill auto-selects which optional docs to include based on project type:
 - **CLI Tool** — skips SITEMAP, DESIGN, USERFLOWS, API_REFERENCE, USER_STORIES
 - **Mobile App** — includes USER_STORIES by default; skips SITEMAP
 - **Internal Tool / Admin** — includes USER_STORIES by default; skips DESIGN, USERFLOWS, API_REFERENCE
+
+## Skill: exporting-product-docs
+
+Exports a `managing-product-docs` doc set from `docs/` into self-contained offline HTML. Use it when product docs need to be shared, deployed, browsed offline, printed, or converted to PDF.
+
+Outputs:
+
+- **per-doc** — a docs-site with one page per document, sidebar navigation, search, theme toggle, Mermaid diagrams, code highlighting, and local assets.
+- **combined** — a single `combined.html` file with everything inlined for sharing or printing.
+
+## Utility Skills
+
+| Skill | Use it when |
+|-------|-------------|
+| **handoff** | You need to preserve session context for another agent. Project mode writes to `.agents/handoff/`; global mode writes to `~/.agents/handoff/`. |
+| **post-verify** | A completed change needs proof from the actual runtime, command, browser, API, or generated artifact. |
+| **simplify** | Recently changed code works but should be cleaned up without changing behavior. |
 
 ## Contributing
 
