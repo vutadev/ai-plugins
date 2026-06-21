@@ -1,6 +1,6 @@
 ---
 name: post-verify
-description: Use after completing a task, feature, fix, refactor, release step, or handoff when the agent must verify the real runtime behavior before saying it is done. Applies to backend, frontend, CLI, batch jobs, integrations, docs-generated artifacts, and fullstack work. Use curl/http clients for HTTP checks, playwright-cli for browser checks, screenshots, command-line probes, logs, or manual evidence; proactively start local services when safe. Includes explicit fresh mode for local development verification when the user asks to resolve port conflicts, clear local data, start a clean session, or restart from scratch.
+description: Use after completing a task, feature, fix, refactor, release step, or handoff when the agent must verify the real runtime behavior before saying it is done. Applies to backend, frontend, CLI, batch jobs, integrations, docs-generated artifacts, and fullstack work. Use curl/http clients for HTTP checks, agent-browser for browser checks, screenshots, command-line probes, logs, or manual evidence; proactively start local services when safe. Includes explicit fresh mode for local development verification when the user asks to resolve port conflicts, clear local data, start a clean session, or restart from scratch.
 ---
 
 # Post-Verify
@@ -27,7 +27,7 @@ Fresh mode:
 - Identify the project command, expected URL or port, conflicting process, and stale state candidate before acting.
 - Stop only clearly project-owned local development processes. Send a graceful interrupt or terminate first; use force only after a short timeout.
 - Ask before killing an unknown process or a process that may belong to another project or user workflow.
-- Allow clearing project-local development data so verification starts from a scratch session: Playwright/browser session state for this project, app cookies/localStorage/sessionStorage, documented temp/cache artifacts, local containers, local volumes, seed/dev databases, or documented local development reset commands.
+- Allow clearing project-local development data so verification starts from a scratch session: browser session state for this project, app cookies/localStorage/sessionStorage, documented temp/cache artifacts, local containers, local volumes, seed/dev databases, or documented local development reset commands.
 - Prefer documented reset commands over manual deletion. When no reset command exists, clear only paths or resources that are clearly scoped to the project.
 - Never clear production data, shared credentials, global user caches, unrelated browser profiles, or unrelated processes.
 - Restart from the documented local command and wait for readiness before running checks.
@@ -70,14 +70,14 @@ Use the best tools available in the current agent and environment:
 | Need | Prefer | Fallback |
 |---|---|---|
 | HTTP/API | `curl -i`, `http`, repo test client | small script, framework client, documented manual request |
-| Browser/UI | `playwright-cli` | `playwright-cli` snapshot, screenshot, and dev server logs |
+| Browser/UI | `agent-browser` | `agent-browser` snapshot, screenshot, and dev server logs |
 | CLI/tooling | run the installed command exactly as a user would | dry-run, fixture command, help/version plus output artifact check |
 | Worker/job | enqueue or invoke the job entry point | local fixture invocation, log inspection with known input |
 | Generated artifact | open/render/parse the output format | checksum, schema validation, text extraction |
 
 Respect project instructions for how to boot services. If they are missing, infer from common commands such as `make dev`, `npm run dev`, `pnpm dev`, `docker compose up`, or the repository README. Record the command used.
 
-Use `playwright-cli` for browser work. When the user asks for `--headed`, headed, or non-headless mode, run `playwright-cli open --headed <url>`.
+Use `agent-browser` for browser work. When the user asks for `--headed`, headed, or non-headless mode, run `agent-browser open --headed <url>`.
 
 Do not hard-code ports, credentials, tenant names, or skill names from another project. Discover them from config, environment, seed data, docs, or the user request. Mask secrets in the report.
 
@@ -97,7 +97,7 @@ Skip this section unless fresh mode is active.
 2. Find expected ports and readiness probes from config, logs, health routes, or dev server output.
 3. Inspect any conflicting port with `lsof` and confirm the process is project-owned before stopping it.
 4. Stop stale project-owned servers, containers, or workers. Prefer graceful commands such as Ctrl-C, `docker compose down`, or the package manager's documented stop command.
-5. Clear project-local development data needed for a clean session: Playwright profiles, browser storage, app session data, local temp/cache folders, local containers/volumes, seed/dev databases, or documented dev reset commands.
+5. Clear project-local development data needed for a clean session: Browser profiles, browser storage, app session data, local temp/cache folders, local containers/volumes, seed/dev databases, or documented dev reset commands.
 6. Recreate required seed data or run documented migrations when the clean session needs them.
 7. Restart the service from the documented command. Capture the command, URL, port, PID or container name, and readiness signal.
 8. Continue to lane checks only after the restarted system responds or produces a clear blocking error.
@@ -129,7 +129,7 @@ Exercise each acceptance step through the UI:
 3. Re-check the page after every submit, navigation, or state change.
 4. Capture a screenshot when visual state matters or when it helps future review.
 
-Use `playwright-cli` for every browser step. Save screenshots in a sortable timestamped work directory using local time: `YYYYMMDD-HHMMSS-feature-or-work-name`, such as `20260529-143012-settings`. Use one timestamp for all screenshots from the same verification pass.
+Use `agent-browser` for every browser step. Save screenshots in a sortable timestamped work directory using local time: `YYYYMMDD-HHMMSS-feature-or-work-name`, such as `20260529-143012-settings`. Use one timestamp for all screenshots from the same verification pass.
 
 Save screenshots only under:
 
@@ -142,12 +142,12 @@ Do not save screenshots directly under `<project_dir>/`.
 Example shape:
 
 ```bash
-playwright-cli open --headed "$WEB_URL/path"
-playwright-cli snapshot
-playwright-cli click <ref>
-playwright-cli snapshot
-playwright-cli screenshot --filename="<project_dir>/screenshots/<YYYYMMDD-HHMMSS-feature>/01-state.png"
-playwright-cli close
+agent-browser open --headed "$WEB_URL/path"
+agent-browser snapshot
+agent-browser click <ref>
+agent-browser snapshot
+agent-browser screenshot --filename="<project_dir>/screenshots/<YYYYMMDD-HHMMSS-feature>/01-state.png"
+agent-browser close
 ```
 
 #### CLI/Tooling

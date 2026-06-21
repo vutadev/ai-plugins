@@ -1,6 +1,6 @@
 {
   "name": "exporting-product-docs-build",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "Build tooling for the exporting-product-docs skill. Bundles src/build.js into a self-contained build.mjs so end users run it with zero npm install.",
