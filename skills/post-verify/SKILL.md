@@ -1,6 +1,6 @@
 ---
 name: post-verify
-description: Use after completing a task, feature, fix, refactor, release step, or handoff when the agent must verify the real runtime behavior before saying it is done. Applies to backend, frontend, CLI, batch jobs, integrations, docs-generated artifacts, and fullstack work. Use curl/http clients for HTTP checks, agent-browser for browser checks, screenshots, command-line probes, logs, or manual evidence; proactively start local services when safe. Includes explicit fresh mode for local development verification when the user asks to resolve port conflicts, clear local data, start a clean session, or restart from scratch.
+description: Use after completing a task, feature, fix, refactor, release step, or handoff when the agent must verify the real runtime behavior before saying it is done. Applies to backend, frontend, CLI, batch jobs, integrations, docs-generated artifacts, and fullstack work. Use curl/http clients for HTTP checks, agent-browser for browser checks, screenshots, command-line probes, logs, or manual evidence; proactively start local services when safe. Every check must leave a reviewable artifact file (API request/response logs, screenshots, HTML captures); source code files are never evidence. Includes explicit fresh mode for local development verification when the user asks to resolve port conflicts, clear local data, start a clean session, or restart from scratch.
 ---
 
 # Post-Verify
@@ -10,6 +10,33 @@ description: Use after completing a task, feature, fix, refactor, release step, 
 Prove the finished work in the running system or final artifact. Passing tests, typechecks, or build commands are useful evidence, but they do not replace a runtime or artifact check.
 
 Report observations from this session only. Mark checks as passing only when directly verified.
+
+## Evidence Artifacts
+
+Every check must leave a reviewable artifact on disk. A check without an artifact does not count as verified, even if it ran.
+
+Create one artifact directory per verification pass, using local time and one timestamp for the whole pass:
+
+```text
+<project_dir>/verifications/<YYYYMMDD-HHMMSS-feature-or-work-name>/
+```
+
+Required per lane:
+
+| Lane | Required artifact |
+|---|---|
+| Backend/API | Log file (`.log`, `.jsonc`, or `.jsonl`) containing the exact request (curl command or equivalent) plus the full captured response: status line, key headers, and body. Real captured content only - never placeholders, summaries, or hand-written expected output. |
+| Frontend/UI | Screenshot per verified state (saved under the screenshots convention below), and an HTML capture (`agent-browser snapshot` output or saved page HTML) when a screenshot alone cannot show the verified behavior. |
+| CLI/tooling | Log file with the exact command, exit code, and captured stdout/stderr. |
+| Integration/jobs | Log file with the trigger and the observed result: response, persisted record, emitted event, or log excerpt. |
+| Docs/artifact | The produced artifact itself, or a log of the render/parse/validation output. |
+
+Rules:
+
+- Include the reviewable URL in the report whenever the verified surface has one (page route, API base, preview link, deployed URL).
+- Never include or cite source code files as evidence. Code shows intent, not runtime behavior. If the only available "evidence" is the code itself, the check is not verified - mark it `[ ]`.
+- Capture artifacts at check time with `tee` or output redirection, not by reconstructing them afterward from memory.
+- Mask secrets (tokens, cookies, credentials) in every artifact.
 
 ## Operating Modes
 
@@ -108,26 +135,35 @@ Skip this section unless fresh mode is active.
 
 Verify status codes and meaningful response fields. Include negative cases where relevant.
 
-Example shape:
+Capture every request and response into the artifact directory as it runs. Example shape:
 
 ```bash
-curl -sS -i "$BASE_URL/health" | sed -n '1,20p'
-curl -sS -i "$BASE_URL/path-under-test" \
-  -H "authorization: Bearer $TOKEN" \
-  | sed -n '1,40p'
-curl -sS -o /dev/null -w '%{http_code}\n' "$BASE_URL/path-under-test"
+ART_DIR="<project_dir>/verifications/<YYYYMMDD-HHMMSS-feature>"
+mkdir -p "$ART_DIR"
+
+{ echo "# curl -sS -i $BASE_URL/health"
+  curl -sS -i "$BASE_URL/health"
+} | tee "$ART_DIR/01-health.log"
+
+{ echo "# curl -sS -i $BASE_URL/path-under-test (auth masked)"
+  curl -sS -i "$BASE_URL/path-under-test" \
+    -H "authorization: Bearer $TOKEN"
+} | tee "$ART_DIR/02-path-under-test.log"
 ```
 
-Record status, key body fields, and any relevant log line or trace id.
+For JSON responses, also save the parsed body as `.jsonc` (with a comment naming the request) or append one request/response pair per line to a `.jsonl` file when checking many cases.
+
+Record in the report: status, key body fields, any relevant server log line or trace id, and the artifact file path for each check. An API check whose log file is missing or empty is not verified.
 
 #### Frontend/UI
 
 Exercise each acceptance step through the UI:
 
-1. Open the actual route.
+1. Open the actual route and record its URL for the report.
 2. Interact with the relevant controls.
 3. Re-check the page after every submit, navigation, or state change.
-4. Capture a screenshot when visual state matters or when it helps future review.
+4. Capture a screenshot for every verified state - a frontend check without a screenshot is not verified.
+5. Save an HTML capture (`agent-browser snapshot` output redirected to a file in the artifact directory) when the verified behavior is not visible in a screenshot alone: DOM attributes, hidden state, aria labels, injected data.
 
 Use `agent-browser` for every browser step. Save screenshots in a sortable timestamped work directory using local time: `YYYYMMDD-HHMMSS-feature-or-work-name`, such as `20260529-143012-settings`. Use one timestamp for all screenshots from the same verification pass.
 
@@ -155,8 +191,8 @@ agent-browser close
 Run the command as documented or as installed:
 
 ```bash
-<command> --help
-<command> <representative arguments>
+<command> <representative arguments> 2>&1 | tee "$ART_DIR/03-cli-run.log"
+echo "exit: ${PIPESTATUS[0]}" | tee -a "$ART_DIR/03-cli-run.log"
 ```
 
 Verify exit code, stdout/stderr, and produced files. For destructive commands, use a fixture, temp directory, dry-run, or test environment.
@@ -180,16 +216,17 @@ Mode: default|fresh
 Scope: <lanes>
 
 ### Checks
-- [x] <golden path> -> <observed evidence>
-- [x] <edge case> -> <observed evidence>
+- [x] <golden path> -> <observed evidence> -> `<artifact file>`
+- [x] <edge case> -> <observed evidence> -> `<artifact file>`
 - [ ] <failed or blocked check> -> expected <x>, got <y> FAILED
 
 ### Verdict
 PASSED|FAILED|BLOCKED - <n> of <m> checks passed.
 
 ### Evidence
+- review url: `<page route, API base, preview or deployed URL, or n/a>`
+- artifacts: `<artifact directory>` - `<log/jsonc/jsonl files, screenshots, HTML captures>`
 - command: `<exact command or tool action>`
-- artifact: `<path or URL>`
 - service: `<boot command, URL/port, PID/container, readiness signal>`
 - fresh: `<stopped process, cleared project-local data/session state, seed/reset command, restart evidence, or n/a>`
 - log/trace: `<short reference>`
@@ -202,6 +239,8 @@ Use these rules:
 - `PASSED` only when every check is `[x]`.
 - `FAILED` when a check ran and behavior was wrong.
 - `BLOCKED` when verification could not run because of missing services, credentials, tooling, or access.
+- Every `[x]` must point to an artifact file that exists on disk with real captured content.
+- Never list source code files under Evidence.
 - Include enough evidence for another agent to repeat the check.
 
 ### 7. Recommend Next Action
@@ -223,6 +262,11 @@ Prefer generic wording when skill names differ between agents. If a known local 
 
 - Claiming success from tests alone.
 - Marking `[x]` without a probe, interaction, command, or artifact inspection in this session.
+- Citing source code as verification evidence.
+- Reporting an API check without a saved `.log`/`.jsonc`/`.jsonl` file containing the real request and response.
+- Reporting a frontend check without a screenshot or HTML capture.
+- Writing an artifact file after the fact instead of capturing it while the check ran.
+- Omitting the review URL when the verified surface has one.
 - Reusing another project's ports, credentials, paths, or screenshots.
 - Skipping edge cases because the golden path passed.
 - Reporting `PASSED` while any check is `[ ]`.
@@ -234,5 +278,5 @@ Prefer generic wording when skill names differ between agents. If a known local 
 ## Quick Reference
 
 ```text
-mode -> classify -> matrix -> start or fresh clear/restart -> run real checks -> report checkbox evidence -> next action
+mode -> classify -> matrix -> start or fresh clear/restart -> run real checks + capture artifacts -> report checkbox evidence + artifact paths + review url -> next action
 ```
