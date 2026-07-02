@@ -15,24 +15,33 @@ Report observations from this session only. Mark checks as passing only when dir
 
 Every check must leave a reviewable artifact on disk. A check without an artifact does not count as verified, even if it ran.
 
-Create one artifact directory per verification pass, using local time and one timestamp for the whole pass:
+Store all verification data under `<project_dir>/.artifacts/`, split by type, with one timestamped subdirectory per verification pass (local time, one timestamp for the whole pass):
 
 ```text
-<project_dir>/verifications/<YYYYMMDD-HHMMSS-feature-or-work-name>/
+<project_dir>/.artifacts/
+  logs/<YYYYMMDD-HHMMSS-feature>/         API, CLI, job logs (.log, .jsonc, .jsonl)
+  screenshots/<YYYYMMDD-HHMMSS-feature>/  UI screenshots (.png)
+  html/<YYYYMMDD-HHMMSS-feature>/         HTML captures and snapshots
+  docs/<YYYYMMDD-HHMMSS-feature>/         produced documents, exports, rendered output
 ```
+
+Name files with a sequence prefix and the check they prove: `01-health.log`, `02-create-user.jsonc`, `03-dashboard-loaded.png`. Ensure `.artifacts/` is git-ignored; never commit verification artifacts.
+
+Curate for manual review. Keep only files a human reviewer needs: the final request/response per check, final-state screenshots, the produced artifact. Before reporting, delete debug dumps, retry noise, and redundant intermediate captures.
 
 Required per lane:
 
 | Lane | Required artifact |
 |---|---|
 | Backend/API | Log file (`.log`, `.jsonc`, or `.jsonl`) containing the exact request (curl command or equivalent) plus the full captured response: status line, key headers, and body. Real captured content only - never placeholders, summaries, or hand-written expected output. |
-| Frontend/UI | Screenshot per verified state (saved under the screenshots convention below), and an HTML capture (`agent-browser snapshot` output or saved page HTML) when a screenshot alone cannot show the verified behavior. |
+| Frontend/UI | Screenshot per verified state under `.artifacts/screenshots/`, and an HTML capture (`agent-browser snapshot` output or saved page HTML) under `.artifacts/html/` when a screenshot alone cannot show the verified behavior. |
 | CLI/tooling | Log file with the exact command, exit code, and captured stdout/stderr. |
 | Integration/jobs | Log file with the trigger and the observed result: response, persisted record, emitted event, or log excerpt. |
 | Docs/artifact | The produced artifact itself, or a log of the render/parse/validation output. |
 
 Rules:
 
+- Report every artifact by its exact file path, down to the file name - never a directory-only reference.
 - Include the reviewable URL in the report whenever the verified surface has one (page route, API base, preview link, deployed URL).
 - Never include or cite source code files as evidence. Code shows intent, not runtime behavior. If the only available "evidence" is the code itself, the check is not verified - mark it `[ ]`.
 - Capture artifacts at check time with `tee` or output redirection, not by reconstructing them afterward from memory.
@@ -138,7 +147,7 @@ Verify status codes and meaningful response fields. Include negative cases where
 Capture every request and response into the artifact directory as it runs. Example shape:
 
 ```bash
-ART_DIR="<project_dir>/verifications/<YYYYMMDD-HHMMSS-feature>"
+ART_DIR="<project_dir>/.artifacts/logs/<YYYYMMDD-HHMMSS-feature>"
 mkdir -p "$ART_DIR"
 
 { echo "# curl -sS -i $BASE_URL/health"
@@ -165,12 +174,11 @@ Exercise each acceptance step through the UI:
 4. Capture a screenshot for every verified state - a frontend check without a screenshot is not verified.
 5. Save an HTML capture (`agent-browser snapshot` output redirected to a file in the artifact directory) when the verified behavior is not visible in a screenshot alone: DOM attributes, hidden state, aria labels, injected data.
 
-Use `agent-browser` for every browser step. Save screenshots in a sortable timestamped work directory using local time: `YYYYMMDD-HHMMSS-feature-or-work-name`, such as `20260529-143012-settings`. Use one timestamp for all screenshots from the same verification pass.
-
-Save screenshots only under:
+Use `agent-browser` for every browser step. Save screenshots under `.artifacts/screenshots/` and HTML captures under `.artifacts/html/`, in the pass's timestamped subdirectory. Use one timestamp for all artifacts from the same verification pass.
 
 ```text
-<project_dir>/screenshots/<YYYYMMDD-HHMMSS-feature-or-work-name>/<filename>.png
+<project_dir>/.artifacts/screenshots/<YYYYMMDD-HHMMSS-feature>/<nn>-<state>.png
+<project_dir>/.artifacts/html/<YYYYMMDD-HHMMSS-feature>/<nn>-<state>.html
 ```
 
 Do not save screenshots directly under `<project_dir>/`.
@@ -181,8 +189,8 @@ Example shape:
 agent-browser open --headed "$WEB_URL/path"
 agent-browser snapshot
 agent-browser click <ref>
-agent-browser snapshot
-agent-browser screenshot --filename="<project_dir>/screenshots/<YYYYMMDD-HHMMSS-feature>/01-state.png"
+agent-browser snapshot > "<project_dir>/.artifacts/html/<YYYYMMDD-HHMMSS-feature>/01-state.html"
+agent-browser screenshot --filename="<project_dir>/.artifacts/screenshots/<YYYYMMDD-HHMMSS-feature>/01-state.png"
 agent-browser close
 ```
 
@@ -203,7 +211,7 @@ Use local fakes, sandbox credentials, fixtures, or recorded payloads when availa
 
 #### Docs And Artifacts
 
-Open, render, parse, or validate the produced artifact. Examples: preview markdown, inspect generated HTML, extract text from PDF/DOCX, validate JSON/schema, or open an exported file.
+Open, render, parse, or validate the produced artifact. Examples: preview markdown, inspect generated HTML, extract text from PDF/DOCX, validate JSON/schema, or open an exported file. Save the produced artifact copy or the render/validation output under `.artifacts/docs/<YYYYMMDD-HHMMSS-feature>/`.
 
 ### 6. Report
 
@@ -225,7 +233,10 @@ PASSED|FAILED|BLOCKED - <n> of <m> checks passed.
 
 ### Evidence
 - review url: `<page route, API base, preview or deployed URL, or n/a>`
-- artifacts: `<artifact directory>` - `<log/jsonc/jsonl files, screenshots, HTML captures>`
+- artifacts:
+  - `.artifacts/logs/<pass>/01-health.log`
+  - `.artifacts/screenshots/<pass>/02-dashboard.png`
+  - `.artifacts/html/<pass>/03-form-state.html`
 - command: `<exact command or tool action>`
 - service: `<boot command, URL/port, PID/container, readiness signal>`
 - fresh: `<stopped process, cleared project-local data/session state, seed/reset command, restart evidence, or n/a>`
@@ -267,6 +278,9 @@ Prefer generic wording when skill names differ between agents. If a known local 
 - Reporting a frontend check without a screenshot or HTML capture.
 - Writing an artifact file after the fact instead of capturing it while the check ran.
 - Omitting the review URL when the verified surface has one.
+- Reporting an artifact directory instead of exact file names.
+- Saving verification data outside `<project_dir>/.artifacts/`.
+- Leaving debug dumps, retry noise, or redundant captures in `.artifacts/` instead of curating for manual review.
 - Reusing another project's ports, credentials, paths, or screenshots.
 - Skipping edge cases because the golden path passed.
 - Reporting `PASSED` while any check is `[ ]`.
