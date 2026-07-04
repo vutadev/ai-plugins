@@ -1,40 +1,51 @@
 ---
 name: post-verify
-description: Use after completing a task, feature, fix, refactor, release step, or handoff when the agent must verify the real runtime behavior before saying it is done. Applies to backend, frontend, CLI, batch jobs, integrations, docs-generated artifacts, and fullstack work. Use curl/http clients for HTTP checks, agent-browser for browser checks, screenshots, command-line probes, logs, or manual evidence; proactively start local services when safe. Every check must leave a reviewable artifact file (API request/response logs, screenshots, HTML captures); source code files are never evidence. Includes explicit fresh mode for local development verification when the user asks to resolve port conflicts, clear local data, start a clean session, or restart from scratch.
+description: Use after completing a task, feature, fix, refactor, release step, or handoff when the agent must verify the real runtime behavior before saying it is done. Applies to backend, frontend, CLI, batch jobs, integrations, docs-generated artifacts, and fullstack work. Use curl/http clients for HTTP checks, agent-browser for browser checks, screenshots, command-line probes, logs, or manual evidence; proactively start local services when safe. Every pass leaves a human-readable HTML report backed by reviewable artifact files (request/response logs, screenshots); source code files are never evidence. Includes explicit fresh mode for local development verification when the user asks to resolve port conflicts, clear local data, start a clean session, or restart from scratch.
 ---
 
 # Post-Verify
 
 ## Principle
 
-Prove the finished work in the running system or final artifact. Passing tests, typechecks, or build commands are useful evidence, but they do not replace a runtime or artifact check.
+Prove the finished work in the running system or final artifact. Verify against the task's goal - the outcome the user wanted - not the steps the agent took to build it. Passing tests, typechecks, or build commands are useful evidence, but they do not replace a runtime or artifact check.
 
 Report observations from this session only. Mark checks as passing only when directly verified.
 
 ## Evidence Artifacts
 
-Every check must leave a reviewable artifact on disk. A check without an artifact does not count as verified, even if it ran.
+One test decides whether a file is an artifact: **does it prove the behavior of the thing you changed, observed at check time?** If not, do not save it.
 
-Store all verification data under `<project_dir>/.artifacts/`, split by type, with one timestamped subdirectory per verification pass (local time, one timestamp for the whole pass):
+Never save (these prove setup ran, not that the feature behaves):
+
+- Test, typecheck, lint, or build output. That is a separate gate - report its pass/fail inline in the verdict; never store it as an artifact.
+- Readiness or health probes, boot logs, login/auth setup, service start/stop/restart captures.
+- Retries, intermediate states, debug dumps. The final state is the proof.
+- Raw DOM/snapshot dumps (`agent-browser snapshot`, `.yml` trees, saved page HTML). Read them live to observe state; put the observed value in the report as text, not a machine dump on disk.
+
+Artifacts are for a human to review, not a machine to parse. Save exactly the files that prove the change - final request/response, final-state screenshot, produced file - and one HTML report that ties them together.
+
+Store under `<project_dir>/.artifacts/`, one timestamped subdirectory per pass (local time, one timestamp for the whole pass):
 
 ```text
 <project_dir>/.artifacts/
-  logs/<YYYYMMDD-HHMMSS-feature>/         API, CLI, job logs (.log, .jsonc, .jsonl)
-  screenshots/<YYYYMMDD-HHMMSS-feature>/  UI screenshots (.png)
-  html/<YYYYMMDD-HHMMSS-feature>/         HTML captures and snapshots
-  docs/<YYYYMMDD-HHMMSS-feature>/         produced documents, exports, rendered output
+  report/<YYYYMMDD-HHMMSS-feature>/report.html   human-readable HTML report of the pass
+  logs/<YYYYMMDD-HHMMSS-feature>/                 API, CLI, job logs (.log, .jsonc)
+  screenshots/<YYYYMMDD-HHMMSS-feature>/          UI screenshots (.png)
+  docs/<YYYYMMDD-HHMMSS-feature>/                 produced documents, exports, rendered output
 ```
 
-Name files with a sequence prefix and the check they prove: `01-health.log`, `02-create-user.jsonc`, `03-dashboard-loaded.png`. Ensure `.artifacts/` is git-ignored; never commit verification artifacts.
+Each pass produces one `report/<pass>/report.html`: a self-contained page a reviewer opens to see the check table, verdict, embedded screenshots, and key request/response excerpts, with the raw logs and screenshots linked by relative path. This report is the primary human-readable artifact; the logs and screenshots are its backing evidence.
 
-Curate for manual review. Keep only files a human reviewer needs: the final request/response per check, final-state screenshots, the produced artifact. Before reporting, delete debug dumps, retry noise, and redundant intermediate captures.
+Name backing files with a sequence prefix and the check they prove: `01-create-user.jsonc`, `02-dashboard-loaded.png`.
+
+**Completion criterion:** before reporting, every file in the pass directory must be cited by a check in the report. Delete any file no check cites - this removes scaffolding, retries, and dumps in one pass. Ensure `.artifacts/` is git-ignored; never commit it.
 
 Required per lane:
 
 | Lane | Required artifact |
 |---|---|
-| Backend/API | Log file (`.log`, `.jsonc`, or `.jsonl`) containing the exact request (curl command or equivalent) plus the full captured response: status line, key headers, and body. Real captured content only - never placeholders, summaries, or hand-written expected output. |
-| Frontend/UI | Screenshot per verified state under `.artifacts/screenshots/`, and an HTML capture (`agent-browser snapshot` output or saved page HTML) under `.artifacts/html/` when a screenshot alone cannot show the verified behavior. |
+| Backend/API | Log file (`.log` or `.jsonc`) with the exact request (curl command or equivalent) plus the full captured response: status line, key headers, body. Real captured content only - never placeholders, summaries, or hand-written expected output. |
+| Frontend/UI | Screenshot per verified state under `.artifacts/screenshots/`. When a screenshot cannot show the behavior (DOM attribute, hidden state, aria label, injected data), read it live with a snapshot and record the observed value as text in `report.html` - do not save the raw snapshot. |
 | CLI/tooling | Log file with the exact command, exit code, and captured stdout/stderr. |
 | Integration/jobs | Log file with the trigger and the observed result: response, persisted record, emitted event, or log excerpt. |
 | Docs/artifact | The produced artifact itself, or a log of the render/parse/validation output. |
@@ -43,7 +54,7 @@ Rules:
 
 - Report every artifact by its exact file path, down to the file name - never a directory-only reference.
 - Include the reviewable URL in the report whenever the verified surface has one (page route, API base, preview link, deployed URL).
-- Never include or cite source code files as evidence. Code shows intent, not runtime behavior. If the only available "evidence" is the code itself, the check is not verified - mark it `[ ]`.
+- Never cite source code as evidence. Code shows intent, not runtime behavior. If the only "evidence" is the code itself, the check is not verified - mark it `[ ]`.
 - Capture artifacts at check time with `tee` or output redirection, not by reconstructing them afterward from memory.
 - Mask secrets (tokens, cookies, credentials) in every artifact.
 
@@ -57,16 +68,12 @@ Default mode:
 - Start missing local services when the boot command is clear from project instructions, scripts, or config.
 - If verification is blocked by a port conflict, stale browser/session state, stale local data, or a wedged dev server, ask before switching to fresh mode.
 
-Fresh mode:
+Fresh mode (policy; procedure is in Fresh Mode Setup):
 
 - Use only when the user says `fresh`, `start from fresh`, `restart clean`, `kill and start`, `clear data`, `start from scratch`, `new session`, `resolve port conflict`, or equivalent wording.
-- Identify the project command, expected URL or port, conflicting process, and stale state candidate before acting.
-- Stop only clearly project-owned local development processes. Send a graceful interrupt or terminate first; use force only after a short timeout.
-- Ask before killing an unknown process or a process that may belong to another project or user workflow.
-- Allow clearing project-local development data so verification starts from a scratch session: browser session state for this project, app cookies/localStorage/sessionStorage, documented temp/cache artifacts, local containers, local volumes, seed/dev databases, or documented local development reset commands.
-- Prefer documented reset commands over manual deletion. When no reset command exists, clear only paths or resources that are clearly scoped to the project.
+- Stop only clearly project-owned processes; graceful interrupt first, force only after a short timeout. Ask before killing an unknown process or one that may belong to another project or user workflow.
+- Clearing is limited to project-local dev state: this project's browser session/cookies/localStorage, documented temp/cache, local containers/volumes, seed/dev databases, or documented reset commands. Prefer a documented reset command over manual deletion.
 - Never clear production data, shared credentials, global user caches, unrelated browser profiles, or unrelated processes.
-- Restart from the documented local command and wait for readiness before running checks.
 
 ## Workflow
 
@@ -89,15 +96,17 @@ Mode: default|fresh
 Scope: <lanes> - touched: <files or areas>
 ```
 
-### 2. Choose the Smallest Real Check
+### 2. Extract the Goal, Then Choose the Smallest Real Check
 
-Create a short verification matrix before running probes:
+First state the goal: what did the task set out to achieve for the user? Recover it from the request and the change, then sharpen it into one observable success sentence - a specific outcome you can see in the running system, not a restatement of the steps taken. "Users on the free plan see the upgrade CTA on the billing page," not "added the CTA component."
 
-- Golden path: the main behavior the user expects.
-- Edges: one or two realistic failure, empty, invalid, permission, or rollback cases.
+Derive the checks from that goal:
+
+- Golden path: the sharpened goal, observed directly.
+- Edges: one or two realistic failure, empty, invalid, permission, or rollback cases the goal implies.
 - Regression guard: one nearby behavior that should still work.
 
-Prefer checks that exercise the actual entry point users or systems call. Avoid checking only an internal helper when a route, UI, command, or artifact can be verified.
+Check the goal at the entry point users or systems actually call - a route, UI, command, or artifact. Do not re-run the agent's in-process steps or check only an internal helper; those show the work happened, not that the goal is met.
 
 ### 3. Adapt to Available Tools
 
@@ -144,23 +153,20 @@ Skip this section unless fresh mode is active.
 
 Verify status codes and meaningful response fields. Include negative cases where relevant.
 
-Capture every request and response into the artifact directory as it runs. Example shape:
+Capture the request and response for the route under test as it runs - not a health probe. Example shape:
 
 ```bash
 ART_DIR="<project_dir>/.artifacts/logs/<YYYYMMDD-HHMMSS-feature>"
 mkdir -p "$ART_DIR"
 
-{ echo "# curl -sS -i $BASE_URL/health"
-  curl -sS -i "$BASE_URL/health"
-} | tee "$ART_DIR/01-health.log"
-
-{ echo "# curl -sS -i $BASE_URL/path-under-test (auth masked)"
-  curl -sS -i "$BASE_URL/path-under-test" \
-    -H "authorization: Bearer $TOKEN"
-} | tee "$ART_DIR/02-path-under-test.log"
+{ echo "# curl -sS -i -X POST $BASE_URL/users (auth masked)"
+  curl -sS -i -X POST "$BASE_URL/users" \
+    -H "authorization: Bearer $TOKEN" \
+    -d '{"email":"a@b.com"}'
+} | tee "$ART_DIR/01-create-user.log"
 ```
 
-For JSON responses, also save the parsed body as `.jsonc` (with a comment naming the request) or append one request/response pair per line to a `.jsonl` file when checking many cases.
+For JSON responses, save the parsed body as `.jsonc` with a comment naming the request.
 
 Record in the report: status, key body fields, any relevant server log line or trace id, and the artifact file path for each check. An API check whose log file is missing or empty is not verified.
 
@@ -172,25 +178,24 @@ Exercise each acceptance step through the UI:
 2. Interact with the relevant controls.
 3. Re-check the page after every submit, navigation, or state change.
 4. Capture a screenshot for every verified state - a frontend check without a screenshot is not verified.
-5. Save an HTML capture (`agent-browser snapshot` output redirected to a file in the artifact directory) when the verified behavior is not visible in a screenshot alone: DOM attributes, hidden state, aria labels, injected data.
+5. When the behavior is not visible in a screenshot (DOM attribute, hidden state, aria label, injected data), read it live with `agent-browser snapshot` and write the observed value into `report.html` as text. Do not save the raw snapshot.
 
-Use `agent-browser` for every browser step. Save screenshots under `.artifacts/screenshots/` and HTML captures under `.artifacts/html/`, in the pass's timestamped subdirectory. Use one timestamp for all artifacts from the same verification pass.
+Use `agent-browser` for every browser step. Save screenshots under `.artifacts/screenshots/` in the pass's timestamped subdirectory. Use one timestamp for all artifacts from the same pass. Do not save screenshots directly under `<project_dir>/`.
 
 ```text
 <project_dir>/.artifacts/screenshots/<YYYYMMDD-HHMMSS-feature>/<nn>-<state>.png
-<project_dir>/.artifacts/html/<YYYYMMDD-HHMMSS-feature>/<nn>-<state>.html
 ```
 
-Do not save screenshots directly under `<project_dir>/`.
+The screenshot path is a positional argument and must be absolute - the `agent-browser` server resolves relative paths against its own working directory, not the shell's, so a relative path fails or lands elsewhere.
 
 Example shape:
 
 ```bash
-agent-browser open --headed "$WEB_URL/path"
-agent-browser snapshot
+ART="$(pwd)/.artifacts/screenshots/<YYYYMMDD-HHMMSS-feature>"
+agent-browser open "$WEB_URL/path"
+agent-browser snapshot   # read state live; observed value goes into report.html
 agent-browser click <ref>
-agent-browser snapshot > "<project_dir>/.artifacts/html/<YYYYMMDD-HHMMSS-feature>/01-state.html"
-agent-browser screenshot --filename="<project_dir>/.artifacts/screenshots/<YYYYMMDD-HHMMSS-feature>/01-state.png"
+agent-browser screenshot --full "$ART/01-state.png"
 agent-browser close
 ```
 
@@ -215,11 +220,16 @@ Open, render, parse, or validate the produced artifact. Examples: preview markdo
 
 ### 6. Report
 
-Always emit a report, even when checks fail:
+Write `report/<pass>/report.html` and emit the same content to chat as Markdown. Never skip the report, even when checks fail.
+
+`report.html` is a single self-contained page for a human reviewer: the check table with pass/fail, the verdict, each screenshot embedded (relative `<img>`), key request/response excerpts inline, and the review URL. Link the backing logs and screenshots by relative path so the reviewer can open one file and see everything.
+
+Chat report shape (mirror it in `report.html`):
 
 ```markdown
 ## Post-Verify Report
 
+Goal: <sharpened observable outcome the task set out to achieve>
 Mode: default|fresh
 Scope: <lanes>
 
@@ -233,10 +243,10 @@ PASSED|FAILED|BLOCKED - <n> of <m> checks passed.
 
 ### Evidence
 - review url: `<page route, API base, preview or deployed URL, or n/a>`
+- report: `.artifacts/report/<pass>/report.html`
 - artifacts:
-  - `.artifacts/logs/<pass>/01-health.log`
+  - `.artifacts/logs/<pass>/01-create-user.log`
   - `.artifacts/screenshots/<pass>/02-dashboard.png`
-  - `.artifacts/html/<pass>/03-form-state.html`
 - command: `<exact command or tool action>`
 - service: `<boot command, URL/port, PID/container, readiness signal>`
 - fresh: `<stopped process, cleared project-local data/session state, seed/reset command, restart evidence, or n/a>`
@@ -274,13 +284,16 @@ Prefer generic wording when skill names differ between agents. If a known local 
 - Claiming success from tests alone.
 - Marking `[x]` without a probe, interaction, command, or artifact inspection in this session.
 - Citing source code as verification evidence.
-- Reporting an API check without a saved `.log`/`.jsonc`/`.jsonl` file containing the real request and response.
-- Reporting a frontend check without a screenshot or HTML capture.
+- Reporting an API check without a saved `.log`/`.jsonc` file containing the real request and response.
+- Reporting a frontend check without a screenshot.
+- Saving test, typecheck, lint, build, readiness, boot, or login output as an artifact.
+- Saving raw DOM/snapshot dumps (`.yml`, page HTML) instead of recording the observed value in `report.html`.
+- Finishing a pass without a `report/<pass>/report.html`.
+- Leaving a file in the pass directory that no check in the report cites.
 - Writing an artifact file after the fact instead of capturing it while the check ran.
 - Omitting the review URL when the verified surface has one.
 - Reporting an artifact directory instead of exact file names.
 - Saving verification data outside `<project_dir>/.artifacts/`.
-- Leaving debug dumps, retry noise, or redundant captures in `.artifacts/` instead of curating for manual review.
 - Reusing another project's ports, credentials, paths, or screenshots.
 - Skipping edge cases because the golden path passed.
 - Reporting `PASSED` while any check is `[ ]`.
@@ -292,5 +305,5 @@ Prefer generic wording when skill names differ between agents. If a known local 
 ## Quick Reference
 
 ```text
-mode -> classify -> matrix -> start or fresh clear/restart -> run real checks + capture artifacts -> report checkbox evidence + artifact paths + review url -> next action
+mode -> extract+sharpen goal -> classify -> matrix from goal -> start or fresh clear/restart -> run real checks + capture artifacts -> write report.html + chat report (checks, verdict, artifact paths, review url) -> next action
 ```
