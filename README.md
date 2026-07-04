@@ -9,7 +9,7 @@ Reusable skills for AI coding agents. Install with a single command via [skills.
 | **managing-product-docs** | Create, extract, update, and audit product documentation (PRD, tech stack, architecture, SRS, design system, database, API reference, test cases, roadmap, and more) for software projects. Supports greenfield init, brownfield extraction, incremental updates, and gap audits. |
 | **exporting-product-docs** | Export a `managing-product-docs` markdown doc set to offline HTML for reading, sharing, printing, PDF workflows, or deployment. Supports per-doc docs-site output and a single combined HTML file. |
 | **handoff** | Compact the current conversation into a project-local or global handoff document so another agent can continue the work. Defaults to `.agents/handoff/` and supports `--project` / `--global`. |
-| **post-verify** | Verify completed work against the real runtime behavior or final artifact before calling a task done. Covers backend, frontend, CLI, integration, generated docs, and fullstack checks. |
+| **post-verify** | Verify completed work against the task's goal in the real runtime or final artifact before calling it done. Each pass produces a human-readable HTML report backed by request/response logs and screenshots. Covers backend, frontend, CLI, integration, generated docs, and fullstack checks. |
 | **simplify** | Refine recently modified code for clarity, consistency, maintainability, and reuse without changing behavior. |
 
 ## Installation
@@ -17,7 +17,7 @@ Reusable skills for AI coding agents. Install with a single command via [skills.
 ### Quick Install (All Agents)
 
 ```bash
-npx skills add vutadev/ai-plugins --all
+npx skills add vutadev/ai-plugins -g
 ```
 
 This auto-detects installed agents and installs all skills to each.
@@ -156,7 +156,7 @@ Outputs:
 | Skill | Use it when |
 |-------|-------------|
 | **handoff** | You need to preserve session context for another agent. Project mode writes to `.agents/handoff/`; global mode writes to `~/.agents/handoff/`. |
-| **post-verify** | A completed change needs proof from the actual runtime, command, browser, API, or generated artifact. |
+| **post-verify** | A completed change needs proof from the actual runtime, command, browser, API, or generated artifact, captured as a curated HTML report. |
 | **simplify** | Recently changed code works but should be cleaned up without changing behavior. |
 
 ## Contributing
